@@ -81,18 +81,36 @@ using namespace std;
 //	return 0;
 //}
 
+//int main() {
+//	int a = 10;
+//	int b = 20;
+//	//int &c; //错误，引用必须初始化
+//	int& c = a; //一旦初始化后，就不可以更改
+//	c = b; //这是赋值操作，不是更改引用
+//
+//	cout << "a = " << a << endl;
+//	cout << "b = " << b << endl;
+//	cout << "c = " << c << endl;
+//
+//	system("pause");
+//
+//	return 0;
+//}
+
+//发现是引用，转换为 int* const ref = &a;
+void func(int& ref) {
+	ref = 100; // ref是引用，转换为*ref = 100
+}
 int main() {
 	int a = 10;
-	int b = 20;
-	//int &c; //错误，引用必须初始化
-	int& c = a; //一旦初始化后，就不可以更改
-	c = b; //这是赋值操作，不是更改引用
 
-	cout << "a = " << a << endl;
-	cout << "b = " << b << endl;
-	cout << "c = " << c << endl;
+	//自动转换为 int* const ref = &a; 指针常量是指针指向不可改，也说明为什么引用不可更改
+	int& ref = a;
+	ref = 20; //内部发现ref是引用，自动帮我们转换为: *ref = 20;
 
-	system("pause");
+	cout << "a:" << a << endl;
+	cout << "ref:" << ref << endl;
 
+	func(a);
 	return 0;
 }
