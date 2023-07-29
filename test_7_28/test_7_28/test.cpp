@@ -10,8 +10,9 @@ public:
 	~Shape() {};
 	virtual void draw();
 	virtual void func2();
+	int geti() const { return i1; }
 private:
-
+	int i1 = 1;
 };
 void Shape::draw() {
 	cout << "shape draw" << endl;
@@ -27,9 +28,10 @@ public:
 	Rec() {};
 	~Rec() {};
 	virtual void draw();
+	int geti() const { return i2; }
 
 private:
-
+	int i2 = 2;
 };
 void Rec::draw() {
 	cout << "rectangle draw" << endl;
@@ -41,9 +43,10 @@ public:
 	Square() {};
 	~Square() {};
 	virtual void draw();
+	int geti() const { return i3; }
 
 private:
-
+	int i3 = 3;
 };
 
 void Square::draw() {
@@ -59,6 +62,6 @@ int main() {
 
 	for (auto a : lst) {
 		a->draw();
+		//cout << a->geti() << endl;
 	}
-
 }
