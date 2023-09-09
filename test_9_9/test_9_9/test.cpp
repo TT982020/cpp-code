@@ -16,6 +16,7 @@ namespace a {
 	namespace xxx {
 		int rand = 1;
 	}
+
 }
 
 //全部展开，默认情况下不会去命名空间找，但是下面一句会放开这个限制，那么就会去命名空间找（此时命名空间中和全局都会去找），这样
@@ -30,6 +31,32 @@ using std::cout;
 using std::endl;
 #include "Queue.h"
 #include "Stack.h"
+//下面这句因为h文件和cpp文件都有缺省函数，所以报错
+//#include "test.h"
+
+////////////////////////////////////////////////缺省参数
+void fun1(int a = 10) {
+	cout << "a=" << a << endl;
+}
+
+namespace b {
+	//函数重载，一词多义，函数名相同，参数不同（类型不同，个数不同，顺序不同（类型顺序不同）），返回值不同不能构成重载
+	int Add(int left, int right)
+	{
+		cout << "int Add(int left, int right)" << endl;
+		return left + right;
+	}
+	double Add(double left, double right)
+	{
+		cout << "double Add(double left, double right)" << endl;
+		return left + right;
+	}
+}
+
+
+//int Add(int a, int b) {
+//	return (a + b) * 10;
+//}
 int main() {
 	/*printf("%p\n", rand);
 	printf("%d\n", a::rand);
@@ -44,13 +71,15 @@ int main() {
 	int i = 0;
 	std::cin >> i;
 	a::Queuenit();
-	a::StackInit();
+	a::ST st;
+	a::StackInit(&st);
+	fun1();
+	cout << b::Add(1, 2) << endl;
+	cout << b::Add(1.1, 2.2) << endl;
 	return 0;
 }
 
-//int Add(int a, int b) {
-//	return (a + b) * 10;
-//}
+
 
 //int main() {
 //	printf("%d\n", a::rand);
@@ -58,3 +87,6 @@ int main() {
 //	printf("%d\n", Add(1, 2));
 //	struct a::Node node;
 //}
+
+
+
