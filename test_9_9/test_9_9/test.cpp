@@ -51,6 +51,14 @@ namespace b {
 		cout << "double Add(double left, double right)" << endl;
 		return left + right;
 	}
+
+	//构成函数重载，但调用存在歧义
+	void fun1(int a, int b = 1) {
+		cout << "fun1" << endl;
+	}
+	void fun1(int a) {
+		cout << "fun1" << endl;
+	}
 }
 
 
@@ -76,6 +84,7 @@ int main() {
 	fun1();
 	cout << b::Add(1, 2) << endl;
 	cout << b::Add(1.1, 2.2) << endl;
+	//b::fun1(1); //调用存在歧义
 	return 0;
 }
 
