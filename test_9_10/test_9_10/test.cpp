@@ -197,6 +197,21 @@ void f(int*) {
 void f(int) {
 	cout << "f(int)" << endl;
 }
+// 类中既有成员变量，又有成员函数
+class A1 {
+public:
+	void f1() {}
+private:
+	int _a;
+};
+// 类中仅有成员函数
+class A2 {
+public:
+	void f2() {}
+};
+// 类中什么都没有---空类
+class A3
+{};
 int main() {
 	vector<std::string> v;
 	auto it = v.begin();
@@ -207,4 +222,7 @@ int main() {
 	cout << endl;
 	f(nullptr);
 	f(1);
+	cout << "sizeof(A1)=" << sizeof(A1) << endl;
+	cout << "sizeof(A2)=" << sizeof(A2) << endl;
+	cout << "sizeof(A3)=" << sizeof(A3) << endl;
 }
