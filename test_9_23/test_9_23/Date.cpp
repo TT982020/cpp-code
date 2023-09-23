@@ -1,6 +1,6 @@
 #include "Date.h"
 
-int Date::GetMonthDay(int year, int month) {
+int Date::GetMonthDay(int year, int month) const {
 	static const int days[] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
 	if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
 	{
@@ -21,6 +21,10 @@ void Date::Print() const {
 	cout << year_ << "-" << month_ << "-" << day_ << endl;
 }
 
+void Date::Print() {
+	cout << year_ << "-" << month_ << "-" << day_ << endl;
+}
+
 Date::~Date() {
 	cout << "~Date();" << endl;
 }
@@ -35,7 +39,7 @@ Date& Date::operator=(const Date& d) {
 	return *this;
 }
 
-bool Date::operator<(const Date& d2) {
+bool Date::operator<(const Date& d2) const {
 	if (year_ < d2.year_)
 	{
 		return true;
@@ -51,23 +55,23 @@ bool Date::operator<(const Date& d2) {
 	}
 }
 
-bool Date::operator==(const Date& d) {
+bool Date::operator==(const Date& d) const {
 	return year_ == d.year_ && month_ == d.month_ && day_ == d.day_;
 }
 
-bool Date::operator!=(const Date& d) {
+bool Date::operator!=(const Date& d) const {
 	return !(*this == d);
 }
 
-bool Date::operator<=(const Date& d) {
+bool Date::operator<=(const Date& d) const {
 	return *this < d || *this == d;
 }
 
-bool Date::operator>(const Date& d) {
+bool Date::operator>(const Date& d) const {
 	return !(*this <= d);
 }
 
-bool Date::operator>=(const Date& d) {
+bool Date::operator>=(const Date& d) const {
 	return !(*this < d);
 }
 
@@ -90,7 +94,7 @@ Date& Date::operator+=(int day) {
 	return *this;
 }
 
-Date Date::operator+(int day) {
+Date Date::operator+(int day) const {
 	Date tmp(*this);
 	tmp += day;
 	return tmp;
@@ -137,7 +141,7 @@ Date& Date::operator-=(int day) {
 	return *this;
 }
 
-Date Date::operator-(int day) {
+Date Date::operator-(int day) const {
 	Date tmp(*this);
 	tmp -= day;
 	return tmp;
@@ -165,7 +169,7 @@ Date Date::operator--(int) {
 	return tmp;
 }
 
-int Date::operator-(const Date& d) {
+int Date::operator-(const Date& d) const {
 	Date max = *this;
 	Date min = d;
 	int flag = 1;
@@ -182,4 +186,14 @@ int Date::operator-(const Date& d) {
 		++n;
 	}
 	return n * flag;
+}
+//日常自动生成的就可以
+	//不想被取到有效地址
+Date* Date::operator&() {
+	//return nullptr;
+	return this;
+}
+
+const Date* Date::operator&() const {
+	return this;
 }
