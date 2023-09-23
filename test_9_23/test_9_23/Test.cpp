@@ -125,6 +125,9 @@ int main() {
 	}
 	cout << endl;
 	Print(sl);
+
+	Date d1(2023, 3, 3);
+	cout << d1;
 }
 
 //int main() {

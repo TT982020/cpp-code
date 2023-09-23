@@ -197,3 +197,8 @@ Date* Date::operator&() {
 const Date* Date::operator&() const {
 	return this;
 }
+
+ostream& operator<<(ostream& out, const Date& d) {
+	out << d.year_ << "/" << d.month_ << "/" << d.day_ << endl;
+	return out;
+}

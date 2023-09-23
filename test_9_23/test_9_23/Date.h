@@ -6,6 +6,7 @@ using namespace std;
 
 class Date
 {
+	friend ostream& operator<<(ostream& out, const Date& d);
 public:
 	int GetMonthDay(int year, int month) const;
 	Date(int year = 1, int month = 1, int day = 1);
@@ -62,6 +63,8 @@ private:
 	int month_;
 	int day_;
 };
+
+ostream& operator<<(ostream& out, const Date& d);
 
 //class MyQueue
 //{
