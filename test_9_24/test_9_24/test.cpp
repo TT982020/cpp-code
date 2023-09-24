@@ -1,6 +1,40 @@
 #include <iostream>
 using namespace std;
-typedef int DataType;
+
+class A
+{
+public:
+	//可以加一个explicit 取消单参数类的隐式转换
+	//explicit A(int i)
+	A(int i)
+		:_a(i)
+	{}
+	A(const A& a)
+		:_a(a._a)
+	{}
+
+private:
+	int _a;
+};
+
+class B
+{
+public:
+	//可以加一个explicit 取消单参数类的隐式转换
+	//explicit A(int i)
+	B(int b1, int b2)
+		: _b1(b1),
+		 _b2(b2)
+	{
+		cout << "B(int b1, int b2)" << endl;
+	}
+
+
+private:
+	int _b1;
+	int _b2;
+};
+typedef A DataType;
 class Stack
 {
 public:
@@ -75,6 +109,9 @@ private:
 	int& _refi;
 };
 
+
+
+
 void TestStack()
 {
 	Stack s(10);
@@ -82,11 +119,31 @@ void TestStack()
 	s.Push(2);
 }
 
+
+
 int main() {
-	TestStack();
+	/*TestStack();
 	int n = 0;
 	Date d(2023, 9, 24, n);
-	d.func();
+	d.func();*/
+	A aa1(1);
+	A aa2 = 2;
+	Stack st;
+	st.Push(1);
+	const A& a = 2;
 
+	B b1(1, 2);
+	B b2 = { 2,2 };
+	const B& ref2 = { 2,3 };
+
+	//有名对象.特点：生命周期在当前局部域
+	A aa6(6);
+	//匿名对象.特点：生命周期只在这一行
+	A(7);
+
+	//int n = 0;
+	/*Date d1(2023, 9, 24);
+	cout << d1 << endl;
+	cout << Date(2023, 9, 24) << endl;*/
 
 }
