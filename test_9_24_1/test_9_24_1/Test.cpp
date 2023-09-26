@@ -94,39 +94,39 @@ using namespace std;
 //
 //}
 
-class A
-{
-public:
-	A(int a = 0)
-		:_a(a)
-	{
-		cout << "A(int a)" << endl;
-	}
-	A(const A& aa)
-		:_a(aa._a)
-	{
-		cout << "A(const A& aa)" << endl;
-	}
-	A& operator=(const A& aa)
-	{
-		cout << "A& operator=(const A& aa)" << endl;
-		if (this != &aa)
-		{
-			_a = aa._a;
-		}
-		return *this;
-	}
-	~A()
-	{
-		cout << "~A()" << endl;
-	}
-
-	void Print() const {
-		cout << "Print()->" << _a << endl;
-	}
-private:
-	int _a;
-};
+//class A
+//{
+//public:
+//	A(int a = 0)
+//		:_a(a)
+//	{
+//		cout << "A(int a)" << endl;
+//	}
+//	A(const A& aa)
+//		:_a(aa._a)
+//	{
+//		cout << "A(const A& aa)" << endl;
+//	}
+//	A& operator=(const A& aa)
+//	{
+//		cout << "A& operator=(const A& aa)" << endl;
+//		if (this != &aa)
+//		{
+//			_a = aa._a;
+//		}
+//		return *this;
+//	}
+//	~A()
+//	{
+//		cout << "~A()" << endl;
+//	}
+//
+//	void Print() const {
+//		cout << "Print()->" << _a << endl;
+//	}
+//private:
+//	int _a;
+//};
 
 //void f(const A& aa = A()) {
 //	aa.Print();
@@ -167,12 +167,12 @@ private:
 //
 //}
 
-A f2() {
-	/*A aa;
-	return aa;*/
-	//return A(1);
-	return 2;
-}
+//A f2() {
+//	/*A aa;
+//	return aa;*/
+//	//return A(1);
+//	return 2;
+//}
 
 //int main() {
 //	A ret = f2();
@@ -183,6 +183,31 @@ A f2() {
 //	return 0;
 //}
 
+class A
+{
+public:
+	A(int a = 0)
+		: _a(a)
+	{
+		cout << "A():" << this << endl;
+	}
+	~A()
+	{
+		cout << "~A():" << this << endl;
+	}
+private:
+	int _a;
+};
+
+struct ListNode
+{
+	ListNode* _next;
+	int _val;
+	ListNode(int val = 0)
+		:_val(val)
+		, _next(nullptr)
+	{}
+};
 
 int main() {
 	int* p1 = (int*)malloc(sizeof(int));
@@ -200,5 +225,47 @@ int main() {
 	int* p7 = new int[10] {1, 2, 3}; // 后面默认是0
 	int* p8 = new int[10] {}; // 默认是0
 
+	//malloc没有办法很好的支持动态申请的自定义类型的初始化
+	A* a1 = (A*)malloc(sizeof(A));
 
+	//自定义类型，开空间+调用构造函数初始化
+	A* a2 = new A;
+	A* a3 = new A(3);
+
+	A aa1(1);
+	A aa2(2);
+	A* a4 = new A[10];
+
+	A* a5 = new A[10]{ aa1,aa2 };
+	A* a6 = new A[10]{ A(1),A(2)};
+	A* a7 = new A[10]{ 1,2 };
+
+
+
+	//自定义类型，调用析构函数+释放空间
+	delete a2;
+	delete a3;
+	delete[] a4;
+	delete[] a5;
+	delete[] a6;
+	delete[] a7;
+
+	ListNode* n1 = new ListNode(1);
+	ListNode* n2 = new ListNode(2);
+	ListNode* n3 = new ListNode(3);
+	ListNode* n4 = new ListNode(4);
+	ListNode* n5 = new ListNode(5);
+
+	n1->_next = n2;
+	n2->_next = n3;
+	n3->_next = n4;
+	n4->_next = n5;
+
+	delete n1;
+	delete n2;
+	delete n3;
+	delete n4;
+	delete n5;
+
+	return 0;
 }
