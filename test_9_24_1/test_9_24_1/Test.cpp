@@ -174,11 +174,31 @@ A f2() {
 	return 2;
 }
 
-int main() {
-	A ret = f2();
-	cout << "-------------------------------------" << endl;
+//int main() {
+//	A ret = f2();
+//	cout << "-------------------------------------" << endl;
+//
+//	A ret2;
+//	ret2 = f2();
+//	return 0;
+//}
 
-	A ret2;
-	ret2 = f2();
-	return 0;
+
+int main() {
+	int* p1 = (int*)malloc(sizeof(int));
+	int* p2 = new int;
+	int* p3 = (int*)malloc(sizeof(int) * 10);
+	int* p4 = new int[10];
+	free(p1);
+	free(p3);
+
+	delete p2; //c++
+	delete[] p4;
+
+	//额外支持开空间+初始化
+	int* p6 = new int(1);
+	int* p7 = new int[10] {1, 2, 3}; // 后面默认是0
+	int* p8 = new int[10] {}; // 默认是0
+
+
 }
