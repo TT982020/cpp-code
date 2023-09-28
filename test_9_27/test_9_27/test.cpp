@@ -1,4 +1,6 @@
 #include <iostream>
+#include <assert.h>
+#include <vector>
 
 using namespace std;
 
@@ -37,11 +39,11 @@ public:
 	// 使用析构函数演示：在类中声明，在类外定义。
 	~Vector();
 
-	void PushBack(const T& data)；
-		void PopBack()；
+	void PushBack(const T& data);
+	void PopBack();
 		// ...
 
-		size_t Size() { return _size; }
+	size_t Size() { return _size; }
 
 	T& operator[](size_t pos)
 	{
@@ -67,4 +69,9 @@ int main() {
 	int a = 1, b = 2;
 	swap(a, b);
 	int* p = func<int>(5);
+	vector<int> v;
+	v.push_back(1);
+	v.push_back(1);
+	v.push_back(1);
+	v.push_back(1);
 }
