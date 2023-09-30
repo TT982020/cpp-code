@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
 #include <assert.h>
 #include <vector>
@@ -206,9 +207,177 @@ void test_string5() {
 
 }
 
+void test_string6() {
+	string s;
+	int old = s.capacity();
+	s.reserve(100);
+	cout << "capacity = " << s.capacity() << endl;
+	for (int i = 0; i < 100; i++)
+	{
+		s.push_back(i);
+		if (old != s.capacity())
+		{
+			cout << "capacity = " << s.capacity() << endl;
+			old = s.capacity();
+		}
+	}
+	s.reserve(10);  //一般不缩小
+	cout << "capacity = " << s.capacity() << endl;
+}
+
+void test_string7() {
+	string s1("hello world");
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+
+	s1.resize(13, 'x');
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+
+	s1.resize(13);
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+
+	s1.resize(20);
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+
+	s1.resize(5);
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+
+	string s2;
+	s2.resize(10, '#');
+	cout << s2 << endl;
+	cout << s2.size() << endl;
+	cout << s2.capacity() << endl;
+}
+
+void test_string8() {
+	string ss("world");
+	string s;
+	s.push_back('#');
+	s.append("hello ");
+	s.append(ss);
+	cout << s << endl;
+
+	s += '#';
+	s += "hello";
+	s += ss;
+	cout << s << endl;
+
+	string ret1 = ss + '#';
+	string ret2 = ss + " hello";
+	cout << ret1 << endl;
+	cout << ret2 << endl;
+}
+
+void test_string9() {
+	string str;
+	string base = "a big brown fox run over a dog.";
+	str.assign(base, 5, 10);
+	cout << str << endl;
+}
+
+
+void test_string10() {
+	//insert/erase/replace 都不建议使用，涉及挪动数据，效率不高
+	//接口设计复杂，需要用的时候查一下
+	string str("hello world");
+	str.insert(0, 1, 'x');
+	str.insert(0, 1, 'x');
+
+	str.insert(str.begin(), 'x');
+	cout << str << endl;
+
+
+	str.erase(5);
+	cout << str << endl;
+
+	/*string s1("hello world");
+	s1.replace(5, 1, "%%20");
+	cout << s1 << endl;*/
+
+	//空格替换为%20
+	string s1 = "The quick brown fox jumps over a lazy dog.";
+	string s2;
+	for (auto ch : s1) {
+		if (ch != ' ')
+		{
+			s2 += ch;
+		}
+		else {
+			s2 += "%20";
+		}
+	}
+	s1.swap(s2);
+	cout << s1 << endl;
+}
+
+void test_string11() {
+	string s1("test.cpp.tar.zip");
+	//size_t i = s1.find('.');
+	size_t i = s1.rfind('.');
+	string s2 = s1.substr(i);
+	cout << s2 << endl;
+
+	string s3("https://legacy.cplusplus.com/reference/string/string/substr/");
+	size_t i1 = s3.find(':');
+	if (i1 != string::npos)
+	{
+		string protocol = s3.substr(0, i1);
+		cout << protocol << endl;
+	}
+	else
+	{
+		cout << "没有找到i1" << endl;
+	}
+	
+	size_t i2 = s3.find('/', i1 + 3);
+	if (i2 != string::npos)
+	{
+		string name = s3.substr(i1 + 3, i2 - (i1 + 3));
+		cout << name << endl;
+	}
+	else
+	{
+		cout << "没有找到i2" << endl;
+	}
+
+	string resource = s3.substr(i2 + 1);
+	cout << resource << endl;
+
+}
+
+void test_string12() {
+	std::string str("Please, replace the vowels in this sentence by asterisks.");
+	std::size_t found = str.find_first_of("abc");
+	//int count[26] = { 0 }; 计数法，判断是否是 abc，相应位置置为1
+	while (found != std::string::npos)
+	{
+		str[found] = '*';
+		found = str.find_first_of("abc", found + 1); //find_any_of
+		//found = str.find_last_of("abc", found + 1); //find_any_of
+		//found = str.find_first_not_of("abc", found + 1); //find_any_of
+		//found = str.find_last_not_of("abc", found + 1); //find_any_of
+	}
+
+	std::cout << str << '\n';
+}
+
 int main() {
 	//test_string1();
-	test_string5();
+	//test_string12();
+	string s;
+	getline(cin, s);
+	int i = s.rfind(' ');
+	string sub = s.substr(i + 1);
+	return sub.size();
 }
 
 //int main() {
