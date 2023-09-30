@@ -370,14 +370,31 @@ void test_string12() {
 	std::cout << str << '\n';
 }
 
+void reverse(string s, int left, int right) {
+	while (left < right) {
+		swap(s[left++], s[right--]);
+	}
+}
+string reverseWords(string s) {
+	//getline(cin, s);
+	int left = 0, right = 0;
+	for (int i = 1; i < s.size() - 1; i++) {
+		if (s[i] == ' ') {
+			right = i;
+			reverse(s, left, right);
+			left = i + 1;
+		}
+	}
+	//cout<<s<<endl;
+	return s;
+}
+
 int main() {
 	//test_string1();
 	//test_string12();
-	string s;
-	getline(cin, s);
-	int i = s.rfind(' ');
-	string sub = s.substr(i + 1);
-	return sub.size();
+	string str = reverseWords("\"hello world\"");
+	cout << str << endl;
+	
 }
 
 //int main() {
