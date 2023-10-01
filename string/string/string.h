@@ -42,14 +42,57 @@ namespace name1 {
 			_size = _capacity = 0;
 		}
 
-		string(const string& str) {
+		/*string(const string& str) {
+			_size = str._size;
+			_capacity = str._capacity;
+			_str = new char[str._capacity + 1];
+			strcpy(_str, str.c_str());
+		}*/
+
+		void swap(string& s) {
+			std::swap(_str, s._str);
+			std::swap(_size, s._size);
+			std::swap(_capacity, s._capacity);
+		}
+
+		//拷贝构造改进
+		string(const string& str)
+			:_str(nullptr)
+			,_size(0)
+			,_capacity(0)
+		{
+			string tmp(str._str);
+			swap(tmp);
+		}
+
+
+		/*string& operator=(const string& str) {
 			if (this != &str)
 			{
+				char* tmp = new char[str._capacity + 1];
+				strcpy(tmp, str.c_str());
+				delete[] _str;
+				_str = tmp;
 				_size = str._size;
 				_capacity = str._capacity;
-				_str = new char[_size + 1];
-				strcpy(_str, str.c_str());
 			}
+			return *this;
+		}*/
+
+		//赋值重载改进
+		/*string& operator=(const string& str) {
+			if (this != &str)
+			{
+				string tmp(str);
+				swap(tmp);
+			}
+			return *this;
+		}*/
+
+		//赋值重载再改进
+		string& operator=(string tmp) {
+			swap(tmp);
+			return *this;
 		}
 
 		char& operator[](int pos) {
@@ -82,6 +125,24 @@ namespace name1 {
 				delete[] _str;
 				_str = tmp;
 				_capacity = n;
+			}
+		}
+
+		void resize(size_t n, char ch = '\0') {
+			if (n < _size)
+			{
+				_str[n] = '\0';
+				_size = n;
+			}
+			else
+			{
+				reserve(n);
+				for (size_t i = _size; i < n; i++)
+				{
+					_str[i] = ch;
+					_size++;
+				}
+				_str[n] = '\0';
 			}
 		}
 
@@ -151,10 +212,10 @@ namespace name1 {
 
 		void erase(int pos, int len = npos) {
 			assert(pos >= 0 || pos < _size);
-			if (len == npos)
+			if (len == npos || pos + len >= _size)
 			{
 				_str[pos] = '\0';
-				_size = pos + 1;
+				_size = pos;
 			}
 			else {
 				size_t end = pos;
@@ -166,6 +227,44 @@ namespace name1 {
 				_size -= len;
 			}
 		}
+
+		size_t find(char ch, size_t pos = 0) {
+			for (size_t i = pos; i < _size; i++)
+			{
+				if (_str[i] == ch) {
+					return i;
+				}
+			}
+			return npos;
+		}
+
+		size_t find(const char* sub, size_t pos = 0) {
+			const char* found = strstr(_str + pos, sub);
+			if (found)
+			{
+				return found - _str;
+			}
+			else {
+				return npos;
+			}
+		}
+
+		string substr(size_t pos, size_t len = npos) {
+			string s;
+			size_t end = pos + len;
+			if (len == npos || pos + len >= _size)
+			{
+				end = _size;
+				len = _size - pos;
+			}
+			s.reserve(len);
+			for (size_t i = pos; i < end; i++)
+			{
+				s += _str[i];
+			}
+			return s;
+		}
+
 		bool operator<(const string& s) {
 			return strcmp(_str, s._str) < 0;
 		}
@@ -199,6 +298,7 @@ namespace name1 {
 		int _size;
 		int _capacity;
 		//const static size_t npos = -1; //特例, 一般来说静态变量不能在这里初始化，但是const static int可以
+	public:
 		const static size_t npos; //特例
 
 	};
@@ -214,15 +314,30 @@ namespace name1 {
 		}
 		return out;
 	}
-
+	
+	//存在一个弊端，可能会导致多次扩容，也可能导致空间浪费,解决办法是先把数据读到一个buffer中，读满了再写到s中
 	istream& operator>>(istream& in, string& s) {
 		char ch;
 		s.clear();
+		char buff[129];
+		size_t i = 0;
 		in.get(ch);
 		while (ch != ' ' && ch != '\n')
 		{
-			s += ch;
+			buff[i++] = ch;
+			if (i==128)
+			{
+				buff[i] = '\0';
+				s += buff; 
+				i = 0;
+			}
+;			//s += ch;
 			in.get(ch);
+		}
+		if (i != 0)
+		{
+			buff[i] = '\0';
+			s += buff;
 		}
 		return in;
 	}
@@ -292,4 +407,60 @@ namespace name1 {
 		cin >> s1;
 		cout << s1;
 	}
+	void test_string6() {
+		string s1("hello world");
+		//s1.resize(20,'x');
+		s1.resize(20);
+		cout << s1;
+	}
+
+	void test_string7() {
+		string s1("test.cpp.tar.zip");
+		//size_t i = s1.find('.');
+		/*size_t i = s1.rfind('.');
+		string s2 = s1.substr(i);
+		cout << s2 << endl;*/
+
+		string s3("https://legacy.cplusplus.com/reference/string/string/substr/");
+		string protocol, name, resource;
+		size_t i1 = s3.find(':');
+		if (i1 != string::npos)
+		{
+			//不解决浅拷贝的问题，这里会出问题，因为substr会调用拷贝构造，此时是浅拷贝，析构后空间释放就会出问题
+			protocol = s3.substr(0, i1);
+			cout << protocol << endl;
+		}
+		else
+		{
+			cout << "没有找到i1" << endl;
+		}
+
+		size_t i2 = s3.find('/', i1 + 3);
+		if (i2 != string::npos)
+		{
+			name = s3.substr(i1 + 3, i2 - (i1 + 3));
+			cout << name << endl;
+		}
+		else
+		{
+			cout << "没有找到i2" << endl;
+		}
+
+		resource = s3.substr(i2 + 1);
+		cout << resource << endl;
+
+	}
+
+	void test_string8() {
+		string s1("hello,world");
+		string s2 = s1;
+		cout << s1 << endl;
+		cout << s2 << endl;
+
+		string s3("xxxxxxxxxxxxxxxxxxx");
+		s2 = s3;
+		cout << s2 << endl;
+
+	}
+
 }
