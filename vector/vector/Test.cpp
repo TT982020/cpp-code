@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 using namespace std;
+#include "vector.h"
 void test_vector1() {
 	vector<int> v1;
 	vector<int> v2(10, 0);
@@ -66,11 +67,64 @@ void test_vector3() {
 }
 
 void test_vector4() {
+	vector<int> v;
+	v.push_back(1);
+	v.push_back(2);
+	v.push_back(3);
+	v.push_back(4);
+	
+	v.insert(v.begin(), 0);
+	for (auto e : v) {
+		cout << e << " ";
+	}
+	cout << endl;
+	auto it = find(v.begin(), v.end(), 3);
+	if (it!=v.end())
+	{
+		v.insert(it, 30);
+	}
+	
+	for (auto e : v) {
+		cout << e << " ";
+	}
+	cout << endl;
 
+	it = find(v.begin(), v.end(), 3);
+	if (it != v.end())
+	{
+		v.erase(it);
+	}
+	
+	for (auto e : v) {
+		cout << e << " ";
+	}
+	cout << endl;
+
+	cout << v.size() << endl;
+	cout << v.capacity() << endl;
+	v.clear();
+	v.shrink_to_fit();
+	cout << v.size() << endl;
+	cout << v.capacity() << endl;
+}
+
+void test() {
+	vector<vector<int>> res;
+	res.resize(5);
+	for (int i = 0; i < res.size(); i++) {
+		res[i].resize(i + 1, 0);
+		res[i][0] = res[i][res[i].size() - 1] = 0;
+		for (size_t j = 0; j < res[i].size(); j++)
+		{
+			res[i][j] = res[i - 1][j] + res[i - 1][j - 1];
+		}
+	}
 }
 
 int main() {
 	
-	test_vector4();
+	//test_vector3();
 	//TestVectorExpand();
+	//test();
+	name::test_vector1();
 }
