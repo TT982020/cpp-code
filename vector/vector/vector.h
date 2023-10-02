@@ -26,15 +26,9 @@ namespace name {
 		}
 
 		vector() 
-			:_start(nullptr)
-			, _finish(nullptr)
-			,_endofstorage(nullptr)
 		{}
 
 		vector(const vector<T>& v)
-			:_start(nullptr)
-			,_finish(nullptr)
-			,_endofstorage(nullptr)
 		{
 			/*int sz = v.size();
 			int cp = v.capacity();
@@ -50,6 +44,33 @@ namespace name {
 				push_back(e);
 			}
 		}
+
+		vector(size_t n, const T & data = T()) {
+			reserve(n);
+			for (size_t i = 0; i < n; i++)
+			{
+				push_back(data);
+			}
+		}
+
+		vector(int n, const T& data = T()) {
+			reserve(n);
+			for (int i = 0; i < n; i++)
+			{
+				push_back(data);
+			}
+		}
+
+		//迭代器区间构造
+		template<class InputIterator>
+		vector(InputIterator first, InputIterator last) {
+			while (first != last)
+			{
+				push_back(*first);
+				++first;
+			}
+		}
+
 		void swap(vector<T>& tmp) {
 			std::swap(_start, tmp._start);
 			std::swap(_finish, tmp._finish);
@@ -65,6 +86,7 @@ namespace name {
 			delete[] _start;
 			_start = _finish = _endofstorage = nullptr;
 		}
+
 		void reserve(size_t n) {
 			if (n > capacity())
 			{
@@ -174,9 +196,9 @@ namespace name {
 		
 
 	private:
-		iterator _start;
-		iterator _finish;
-		iterator _endofstorage;
+		iterator _start = nullptr;
+		iterator _finish = nullptr;
+		iterator _endofstorage = nullptr;
 	};
 
 	void test_vector1() {
@@ -323,6 +345,39 @@ namespace name {
 		cout << endl;
 
 		for (auto e : v2) {
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+	void test_vector8() {
+		vector<int> v0(10, 0);
+		vector<string> v1(10, "xxxxxxx");
+		vector<int> v2;
+		v2.push_back(10);
+		v2.push_back(20);
+		v2.push_back(30);
+		v2.push_back(40);
+		v2.push_back(50);
+		vector<int> v3(v2.begin(), v2.end());
+
+		string str("hello,world");
+		vector<int> v4(str.begin(), str.end());
+		for (auto e : v0) {
+			cout << e << " ";
+		}
+		cout << endl;
+		for (auto e : v1) {
+			cout << e << " ";
+		}
+		cout << endl;
+
+		for (auto e : v3) {
+			cout << e << " ";
+		}
+		cout << endl;
+
+		for (auto e : v4) {
 			cout << e << " ";
 		}
 		cout << endl;
