@@ -126,5 +126,5 @@ int main() {
 	//test_vector3();
 	//TestVectorExpand();
 	//test();
-	name::test_vector1();
+	name::test_vector7();
 }
