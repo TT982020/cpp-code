@@ -83,5 +83,5 @@ void test_list4() {
 int main() {
 	//test_list4();
 
-	name::test_list1();
+	name::test_list2();
 }
