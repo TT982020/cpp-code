@@ -1,6 +1,7 @@
 #include <iostream>
 #include <list>
 using namespace std;
+#include "list.h"
 void test_list1() {
 	list<int> lt;
 	lt.push_back(1);
@@ -80,5 +81,7 @@ void test_list4() {
 }
 
 int main() {
-	test_list4();
+	//test_list4();
+
+	name::test_list1();
 }
