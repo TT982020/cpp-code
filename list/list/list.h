@@ -1,5 +1,6 @@
 #pragma once
 #include <assert.h>
+#include <vector>
 namespace name {
 	template<class T>
 	struct list_node
@@ -14,19 +15,23 @@ namespace name {
 		{}
 	};
 
-	template<class T>
+	template<class T, class Ref, class Ptr>
 	struct __list_iterator
 	{
 		typedef list_node<T> Node;
-		typedef __list_iterator<T> self;
+		typedef __list_iterator<T, Ref, Ptr> self;
 		Node* _node;
 
 		__list_iterator(Node* node)
 			:_node(node)
 		{}
 
-		T* operator->() {
+		Ptr operator->() {
 			return &_node->_data;
+		}
+
+		Ref operator*() {
+			return _node->_data;
 		}
 
 		self& operator++() {
@@ -51,10 +56,6 @@ namespace name {
 			return tmp;
 		}
 
-		T& operator*() {
-			return _node->_data;
-		}
-
 		bool operator!=(const self& s) {
 			return _node != s._node;
 		}
@@ -64,12 +65,63 @@ namespace name {
 		}
 	};
 
+	/*template<class T>
+	struct __list_const_iterator
+	{
+		typedef list_node<T> Node;
+		typedef __list_const_iterator<T> self;
+		const Node* _node;
+
+		__list_const_iterator(Node* node)
+			:_node(node)
+		{}
+
+		const T* operator->() {
+			return &_node->_data;
+		}
+
+		const T& operator*() {
+			return _node->_data;
+		}
+
+		self& operator++() {
+			_node = _node->_next;
+			return *this;
+		}
+
+		self& operator--() {
+			_node = _node->_prev;
+			return *this;
+		}
+
+		self operator++(int) {
+			self tmp(*this);
+			_node = _node->_next;
+			return tmp;
+		}
+
+		self operator--(int) {
+			self tmp(*this);
+			_node = _node->_prev;
+			return tmp;
+		}
+
+		bool operator!=(const self& s) {
+			return _node != s._node;
+		}
+
+		bool operator==(const self& s) {
+			return _node == s._node;
+		}
+	};*/
+
 	template<class T>
 	class list
 	{
 	public:
 		typedef list_node<T> Node;
-		typedef __list_iterator<T> iterator;
+		typedef __list_iterator<T, T&, T*> iterator;
+		typedef __list_iterator<T, const T&, const T*> const_iterator;
 		void empty_init() {
 			_head = new Node;
 			_head->_next = _head;
@@ -115,11 +167,11 @@ namespace name {
 			return _head;
 		}
 
-		iterator begin() const {
+		const_iterator begin() const {
 			return _head->_next;
 		}
 
-		iterator end() const {
+		const_iterator end() const {
 			return _head;
 		}
 
@@ -270,5 +322,69 @@ namespace name {
 			++it;
 		}
 		cout << endl;
+	}
+
+	//void print_list(const list<int>& lt) {
+	//	list<int>::const_iterator it = lt.begin();
+	//	while (it != lt.end()){
+	//		//*it = 90;
+	//		cout << *it << " ";
+	//		++it;
+	//	}
+	//	cout << endl;
+	//}
+
+	//template<class T>
+	template<typename T, class C>
+	// list<T>未实例化的类模板，编译器就不能去他里面去找
+	// 编译器就无法判断list<T>::const_iterator是内嵌类型，还是静态成员变量
+	// 前面加一个typename就是告诉编译器，这里是一个类型，等list<T>实例化
+	// 再去类里面去取
+	void print_list(const list<T>& lt) {
+		typename list<T>::const_iterator it = lt.begin();
+		while (it != lt.end()) {
+			//*it = 90;
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;
+	}
+
+	template<typename Container>
+	void print_container(const Container& con) {
+		typename Container::const_iterator it = con.begin();
+		while (it != con.end())
+		{
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;
+	}
+
+	void test_list3() {
+		list<int> lt;
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+		lt.push_back(5);
+		print_container(lt);
+
+		list<string> lt1;
+		lt1.push_back("1111111111");
+		lt1.push_back("1111111111");
+		lt1.push_back("1111111111");
+		lt1.push_back("1111111111");
+		lt1.push_back("1111111111");
+		lt1.push_back("1111111111");
+		print_container(lt1);
+
+		vector<string> v;
+		v.push_back("2222222222");
+		v.push_back("2222222222");
+		v.push_back("2222222222");
+		v.push_back("2222222222");
+		v.push_back("2222222222");
+		print_container(v);
 	}
 }
