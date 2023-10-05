@@ -1,7 +1,7 @@
 #pragma once
 
 namespace C {
-	template<class T, class Container = vector<T>, class Compare = Less<T>>
+	template<class T, class Container = vector<T>, class Compare = DateCompare<T>>
 	class priority_queue
 	{
 	public:
