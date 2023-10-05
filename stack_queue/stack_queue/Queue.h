@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include <deque>
 #include <list>
 namespace B {
 	template <class T, class Container = deque<T>> 
