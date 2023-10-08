@@ -90,7 +90,7 @@ void test_date() {
 void test_priority_queue() {
 	//插入删除的效率logn
 	//priority_queue<int> q;//大堆
-	C::priority_queue<int, vector<int>, C::Less<int>> q;//小堆
+	C::priority_queue<int, vector<int>, C::Less<int>> q;//大堆
 	q.push(3);
 	q.push(1);
 	q.push(5);
@@ -169,17 +169,17 @@ public:
 };
 
 int main() {
-	//test_priority_queue();
-	test_date();
-	Stack<int, 10> st;
+	test_priority_queue();
+	//test_date();
+	//Stack<int, 10> st;
 
-	array<int, 10> a;  //多了越界检查
-	vector<int> v(10, 0);
+	//array<int, 10> a;  //多了越界检查
+	//vector<int> v(10, 0);
 
-	Date1<int, int> d1;
-	Date1<int, double> d2;
-	Date1<double, double> d2;
-	Date1<double*, double*> d2;
-	Date1<int*, double*> d2;
+	//Date1<int, int> d1;
+	//Date1<int, double> d2;
+	//Date1<double, double> d2;
+	//Date1<double*, double*> d2;
+	//Date1<int*, double*> d2;
 
 }
