@@ -156,36 +156,156 @@ using namespace std;
 //	Test();
 //}
 
-class A
-{
+//class A
+//{
+//public:
+//	int _a;
+//};
+////class B : public A
+//class B : virtual public A
+//{
+//public:
+//	int _b;
+//};
+////class C : public A
+//class C : virtual public A
+//{
+//public:
+//	int _c;
+//};
+//class D : public B, public C
+//{
+//public:
+//	int _d;
+//};
+//int main()
+//{
+//	D d;
+//	d.B::_a = 1;
+//	d.C::_a = 2;
+//	d._b = 3;
+//	d._c = 4;
+//	d._d = 5;
+//	return 0;
+//}
+
+
+//class Person {
+//public:
+//	virtual void BuyTicket() { cout << "买票-全价" << endl; }
+//	virtual void fun1() { 
+//		cout << "Person::fun1()" << endl;
+//	}
+//	virtual void fun2() {
+//		cout << "Person::fun2()" << endl;
+//	}
+//
+//};
+//class Student : public Person {
+//public:
+//	virtual void BuyTicket() { cout << "买票-半价" << endl; }
+//	virtual void fun3() { 
+//		cout << "Student::fun3()" << endl;
+//	}
+//};
+//void Func(Person& p)
+//{
+//	p.BuyTicket();
+//}
+//
+//void func() {
+//	Person ps1;
+//	Student st1;
+//}
+//
+//typedef void(*FUNC_PTR)();
+//
+//void PrintVFT(FUNC_PTR* table) {
+//	for (int i = 0; table[i] != nullptr; i++) {
+//		printf("table[%d]=%p->", i, table[i]);
+//		FUNC_PTR f = table[i];
+//		f();
+//	}
+//	cout << endl;
+//}
+//
+//int main() {
+//	Person ps;
+//	Student st;
+//	long long fptr1 = *((long long*)(&ps));
+//	long long fptr2 = *((long long*)(&st));
+//
+//	PrintVFT((FUNC_PTR*)fptr1);
+//	PrintVFT((FUNC_PTR*)fptr2);
+//
+//
+//}
+//int main()
+//{
+//	Person ps;
+//	Student st;
+//
+//	//func();
+//
+//	int a = 0;
+//	printf("栈:%p\n", &a);
+//
+//	int* b = new int;
+//	printf("堆:%p\n", b);
+//
+//	static int c = 0;
+//	printf("静态区:%p\n", &c);
+//
+//	const char* str = "hello";
+//	printf("常量字符串:%p\n", str);
+//
+//	const int d = 0;
+//	printf("常量数据:%p\n", &d);
+//	printf("代码段:%p\n", &Func);
+//
+//
+//
+//	printf("虚表1:%p\n", *((int*)(& ps)));
+//	printf("虚表2:%p\n", *((int*)(& st)));
+//
+//}
+
+class Base1 {
 public:
-	int _a;
+	virtual void func1() { cout << "Base1::func1" << endl; }
+	virtual void func2() { cout << "Base1::func2" << endl; }
+private:
+	int b1;
 };
-//class B : public A
-class B : virtual public A
-{
+class Base2 {
 public:
-	int _b;
+	virtual void func1() { cout << "Base2::func1" << endl; }
+	virtual void func2() { cout << "Base2::func2" << endl; }
+private: int b2;
 };
-//class C : public A
-class C : virtual public A
-{
+class Derive : public Base1, public Base2 {
 public:
-	int _c;
+	virtual void func1() { cout << "Derive::func1" << endl; }
+	virtual void func3() { cout << "Derive::func3" << endl; }
+private:
+	int d1;
 };
-class D : public B, public C
-{
-public:
-	int _d;
-};
+typedef void(*FUNC_PTR)();
+
+void PrintVFT(FUNC_PTR* table) {
+	for (int i = 0; table[i] != nullptr; i++) {
+		printf("table[%d]=%p->", i, table[i]);
+		FUNC_PTR f = table[i];
+		f();
+	}
+	cout << endl;
+}
 int main()
 {
-	D d;
-	d.B::_a = 1;
-	d.C::_a = 2;
-	d._b = 3;
-	d._c = 4;
-	d._d = 5;
+	Derive d;
+	FUNC_PTR* vTableb1 = (FUNC_PTR*)(*(long long*)&d);
+	PrintVFT(vTableb1);
+	FUNC_PTR* vTableb2 = (FUNC_PTR*)(*(long long*)((char*)&d + sizeof(Base1)));
+	PrintVFT(vTableb2);
 	return 0;
 }
-
