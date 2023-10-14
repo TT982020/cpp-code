@@ -270,42 +270,96 @@ using namespace std;
 //
 //}
 
-class Base1 {
-public:
-	virtual void func1() { cout << "Base1::func1" << endl; }
-	virtual void func2() { cout << "Base1::func2" << endl; }
-private:
-	int b1;
-};
-class Base2 {
-public:
-	virtual void func1() { cout << "Base2::func1" << endl; }
-	virtual void func2() { cout << "Base2::func2" << endl; }
-private: int b2;
-};
-class Derive : public Base1, public Base2 {
-public:
-	virtual void func1() { cout << "Derive::func1" << endl; }
-	virtual void func3() { cout << "Derive::func3" << endl; }
-private:
-	int d1;
-};
-typedef void(*FUNC_PTR)();
+//class Base1 {
+//public:
+//	virtual void func1() { cout << "Base1::func1" << endl; }
+//	virtual void func2() { cout << "Base1::func2" << endl; }
+//private:
+//	int b1;
+//};
+//class Base2 {
+//public:
+//	virtual void func1() { cout << "Base2::func1" << endl; }
+//	virtual void func2() { cout << "Base2::func2" << endl; }
+//private: int b2;
+//};
+//class Derive : public Base1, public Base2 {
+//public:
+//	virtual void func1() { cout << "Derive::func1" << endl; }
+//	virtual void func3() { cout << "Derive::func3" << endl; }
+//private:
+//	int d1;
+//};
+//typedef void(*FUNC_PTR)();
+//
+//void PrintVFT(FUNC_PTR* table) {
+//	for (int i = 0; table[i] != nullptr; i++) {
+//		printf("table[%d]=%p->", i, table[i]);
+//		FUNC_PTR f = table[i];
+//		f();
+//	}
+//	cout << endl;
+//}
+//int main()
+//{
+//	Derive d;
+//	FUNC_PTR* vTableb1 = (FUNC_PTR*)(*(long long*)&d);
+//	PrintVFT(vTableb1);
+//	FUNC_PTR* vTableb2 = (FUNC_PTR*)(*(long long*)((char*)&d + sizeof(Base1)));
+//	PrintVFT(vTableb2);
+//	return 0;
+//}
 
-void PrintVFT(FUNC_PTR* table) {
-	for (int i = 0; table[i] != nullptr; i++) {
-		printf("table[%d]=%p->", i, table[i]);
-		FUNC_PTR f = table[i];
-		f();
-	}
-	cout << endl;
-}
+
+///////////////////////////////////菱形继承
+class A
+{
+public:
+    virtual void func1() {
+        cout << "A::func1()" << endl;
+    }
+    int _a;
+};
+
+//class B : public A
+class B : virtual public A
+{
+public:
+    virtual void func1() {
+        cout << "B::func1()" << endl;
+    }
+    virtual void func2() {
+        cout << "B::func2()" << endl;
+    }
+    int _b;
+};
+//class C : public A
+class C : virtual public A
+{
+public:
+    virtual void func1() {
+        cout << "C::func1()" << endl;
+    }
+    virtual void func2() {
+        cout << "C::func2()" << endl;
+    }
+    int _c;
+};
+class D : public B, public C
+{
+public:
+    virtual void func1() {
+        cout << "D::func1()" << endl;
+    }
+    int _d;
+};
 int main()
 {
-	Derive d;
-	FUNC_PTR* vTableb1 = (FUNC_PTR*)(*(long long*)&d);
-	PrintVFT(vTableb1);
-	FUNC_PTR* vTableb2 = (FUNC_PTR*)(*(long long*)((char*)&d + sizeof(Base1)));
-	PrintVFT(vTableb2);
-	return 0;
+    D d;
+    d.B::_a = 1;
+    d.C::_a = 2;
+    d._b = 3;
+    d._c = 4;
+    d._d = 5;
+    return 0;
 }
