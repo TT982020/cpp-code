@@ -312,54 +312,118 @@ using namespace std;
 
 
 ///////////////////////////////////菱形继承
-class A
+//class A
+//{
+//public:
+//    virtual void func1() {
+//        cout << "A::func1()" << endl;
+//    }
+//    int _a;
+//};
+//
+////class B : public A
+//class B : virtual public A
+//{
+//public:
+//    virtual void func1() {
+//        cout << "B::func1()" << endl;
+//    }
+//    virtual void func2() {
+//        cout << "B::func2()" << endl;
+//    }
+//    int _b;
+//};
+////class C : public A
+//class C : virtual public A
+//{
+//public:
+//    virtual void func1() {
+//        cout << "C::func1()" << endl;
+//    }
+//    virtual void func2() {
+//        cout << "C::func2()" << endl;
+//    }
+//    int _c;
+//};
+//class D : public B, public C
+//{
+//public:
+//    virtual void func1() {
+//        cout << "D::func1()" << endl;
+//    }
+//    int _d;
+//};
+//int main()
+//{
+//    D d;
+//    d.B::_a = 1;
+//    d.C::_a = 2;
+//    d._b = 3;
+//    d._c = 4;
+//    d._d = 5;
+//    return 0;
+//}
+
+////////////////////////////////////////抽象类
+//纯虚函数：间接强制派生类重写虚函数
+//class Car
+//{
+//public:
+//	virtual void Drive() = 0;
+//};
+//
+//class Benz :public Car
+//{
+//public:
+//	virtual void Drive()
+//	{
+//		cout << "Benz-舒适" << endl;
+//	}
+//};
+//
+//class BMW :public Car
+//{
+//public:
+//	virtual void Drive()
+//	{
+//		cout << "BMW-操控" << endl;
+//	}
+//};
+//
+//
+//int main()
+//{
+//	Car* pBenz = new Benz;
+//	pBenz->Drive();
+//	Car* pBMW = new BMW;
+//	pBMW->Drive();
+//}
+
+class Person
 {
 public:
-    virtual void func1() {
-        cout << "A::func1()" << endl;
-    }
-    int _a;
+	Person() {
+
+	}
+	~Person() {}
+	virtual void fun() {
+		cout << "Person::fun()" << endl;
+	}
+
+private:
+
 };
 
-//class B : public A
-class B : virtual public A
+class Student: public Person
 {
 public:
-    virtual void func1() {
-        cout << "B::func1()" << endl;
-    }
-    virtual void func2() {
-        cout << "B::func2()" << endl;
-    }
-    int _b;
+
+private:
+
 };
-//class C : public A
-class C : virtual public A
-{
-public:
-    virtual void func1() {
-        cout << "C::func1()" << endl;
-    }
-    virtual void func2() {
-        cout << "C::func2()" << endl;
-    }
-    int _c;
-};
-class D : public B, public C
-{
-public:
-    virtual void func1() {
-        cout << "D::func1()" << endl;
-    }
-    int _d;
-};
-int main()
-{
-    D d;
-    d.B::_a = 1;
-    d.C::_a = 2;
-    d._b = 3;
-    d._c = 4;
-    d._d = 5;
-    return 0;
+
+
+int main() {
+	Person ps;
+	Student st;
 }
