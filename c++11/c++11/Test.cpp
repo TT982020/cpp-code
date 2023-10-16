@@ -75,18 +75,88 @@ private:
 //}
 
 
-int main() {
-	const int a = 0;
-	int* p = new int(0);
-	int b = 1;
-	const int c = 2;
+//int main() {
+//	const int a = 0;
+//	int* p = new int(0);
+//	int b = 1;
+//	const int c = 2;
+//
+//	double x = 1.1, y = 2.2;
+//	//以下是常见的右值
+//	10;
+//	x + y;
+//	fmin(x, y);  // 返回的是一个临时对象，都是右值
+//
+//	const char* p = "xxxxxxxxxxx";  //左值
+//	cout << &p[2] << endl;
+//}
 
-	double x = 1.1, y = 2.2;
-	//以下是常见的右值
-	10;
-	x + y;
-	fmin(x, y);  // 返回的是一个临时对象，都是右值
+//int main() {
+//	//左值引用
+//	int a = 10;
+//	double x = 1.1, y = 2.2;
+//
+//	int& r = a;
+//	//左值引用可以引用右值，加const
+//	const int& r2 = 10;
+//	const double& r3 = x + y;
+//
+//	//右值引用
+//	int&& r1 = 10;
+//	
+//	double&& z = x + y;
+//
+//	//右值引用能否给左值取别名？
+//	//不能直接引用，但可以引用move之后的左值
+//	int&& r4 = move(a);
+//}
 
-	const char* p = "xxxxxxxxxxx";  //左值
-	cout << &p[2] << endl;
+void Fun(int& x) { cout << "左值引用" << endl; }
+void Fun(const int& x) { cout << "const 左值引用" << endl; }
+void Fun(int&& x) { cout << "右值引用" << endl; }
+void Fun(const int&& x) { cout << "const 右值引用" << endl; }
+// 模板中的&&不代表右值引用，而是万能引用，其既能接收左值又能接收右值。
+// 模板的万能引用只是提供了能够接收同时接收左值引用和右值引用的能力，
+// 但是引用类型的唯一作用就是限制了接收的类型，后续使用中都退化成了左值，
+// 我们希望能够在传递过程中保持它的左值或者右值的属性, 就需要用我们下面学习的完美转发
+
+template<typename T>
+void PerfectForward(T&& t)
+{
+	Fun(t);
+	//完美转发，t是左值引用，保持左值属性
+	//完美转发，t是右值引用，保持右值属性
+	//Fun(forward<T>(t));
 }
+
+
+int main()
+{
+	PerfectForward(10); // 右值
+	int a;
+	PerfectForward(a); // 左值
+	PerfectForward(std::move(a)); // 右值
+	const int b = 8;
+	PerfectForward(b);  // const 左值
+	PerfectForward(std::move(b)); // const 右值
+
+	//int a;
+	int& r = a;
+	int&& rr = move(a);
+	int&& rrr = 10;
+	rrr++;
+	cout << &a << endl;
+	cout << &r << endl;
+	cout << &rr << endl;
+	cout << rrr << endl;
+	return 0;
+}
+
+//int main() {
+//	int a;
+//	int& r = a;
+//	int&& rr = move(a);
+//	cout << &a << endl;
+//	cout << &r << endl;
+//	cout << &rr << endl;
+//}
