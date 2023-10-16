@@ -1,10 +1,11 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+ï»¿#define _CRT_SECURE_NO_WARNINGS 1
 
 #include <iostream>
 #include <vector>
 #include <list>
 #include <map>
-
+#include <algorithm>
+#include <string>
 using namespace std;
 struct Point
 {
@@ -38,17 +39,17 @@ struct Point
 //}
 
 //int main() {
-//	//ÏÂÃæÁ½ĞĞÊÇ²»Í¬µÄ£¬
-//	//Point p = { 1,1 };ÊÇµ÷ÓÃÁË¹¹Ôìº¯Êı
-//	//¶øvector<int> v = { 1,2,3,4,5 }; ÓÒ±ßÊÇÒ»¸öinitialization_list<int> 
+//	//ä¸‹é¢ä¸¤è¡Œæ˜¯ä¸åŒçš„ï¼Œ
+//	//Point p = { 1,1 };æ˜¯è°ƒç”¨äº†æ„é€ å‡½æ•°
+//	//è€Œvector<int> v = { 1,2,3,4,5 }; å³è¾¹æ˜¯ä¸€ä¸ªinitialization_list<int> 
 //	vector<int> v = { 1,2,3,4,5 };  
-//	Point p = { 1,1 };  //Ö±½Óµ÷ÓÃÁ½¸ö²ÎÊıµÄ¹¹Ôì£¬ÒşÊ½ÀàĞÍ×ª»»
+//	Point p = { 1,1 };  //ç›´æ¥è°ƒç”¨ä¸¤ä¸ªå‚æ•°çš„æ„é€ ï¼Œéšå¼ç±»å‹è½¬æ¢
 //
 //	// the type of il is an initializer_list 
 //	auto il = { 10, 20, 30 };
 //	cout << typeid(il).name() << endl;
 //
-//	map<string, string> dict = { {"sort","ÅÅĞò"},{"left","×ó±ß"} };
+//	map<string, string> dict = { {"sort","æ’åº"},{"left","å·¦è¾¹"} };
 //	v = { 2,3,4,5 };
 //}
 
@@ -65,11 +66,11 @@ private:
 
 //int main() {
 //	auto pf = malloc;
-//	//typeid(pf).name()ÍÆ³öµÄÊÇ¶ÔÏóµÄÀàĞÍÊÇÒ»¸ö×Ö·û´®£¬Ö»ÄÜ¿´²»ÄÜÓÃ
+//	//typeid(pf).name()æ¨å‡ºçš„æ˜¯å¯¹è±¡çš„ç±»å‹æ˜¯ä¸€ä¸ªå­—ç¬¦ä¸²ï¼Œåªèƒ½çœ‹ä¸èƒ½ç”¨
 //	cout << typeid(pf).name() << endl;
 //	int x = 0, y = 10;
 //
-//	//decltype(pf)ÍÆ³öµÄÊÇ¶ÔÏóµÄÀàĞÍ£¬ÔÚ¶¨Òå±äÁ¿£¬»ò×÷ÎªÄ£°åÊµ²Î
+//	//decltype(pf)æ¨å‡ºçš„æ˜¯å¯¹è±¡çš„ç±»å‹ï¼Œåœ¨å®šä¹‰å˜é‡ï¼Œæˆ–ä½œä¸ºæ¨¡æ¿å®å‚
 //	decltype(pf) pf1;
 //
 //	B<decltype(pf)> b;
@@ -84,63 +85,63 @@ private:
 //	const int c = 2;
 //
 //	double x = 1.1, y = 2.2;
-//	//ÒÔÏÂÊÇ³£¼ûµÄÓÒÖµ
+//	//ä»¥ä¸‹æ˜¯å¸¸è§çš„å³å€¼
 //	10;
 //	x + y;
-//	fmin(x, y);  // ·µ»ØµÄÊÇÒ»¸öÁÙÊ±¶ÔÏó£¬¶¼ÊÇÓÒÖµ
+//	fmin(x, y);  // è¿”å›çš„æ˜¯ä¸€ä¸ªä¸´æ—¶å¯¹è±¡ï¼Œéƒ½æ˜¯å³å€¼
 //
-//	const char* p = "xxxxxxxxxxx";  //×óÖµ
+//	const char* p = "xxxxxxxxxxx";  //å·¦å€¼
 //	cout << &p[2] << endl;
 //}
 
 //int main() {
-//	//×óÖµÒıÓÃ
+//	//å·¦å€¼å¼•ç”¨
 //	int a = 10;
 //	double x = 1.1, y = 2.2;
 //
 //	int& r = a;
-//	//×óÖµÒıÓÃ¿ÉÒÔÒıÓÃÓÒÖµ£¬¼Óconst
+//	//å·¦å€¼å¼•ç”¨å¯ä»¥å¼•ç”¨å³å€¼ï¼ŒåŠ const
 //	const int& r2 = 10;
 //	const double& r3 = x + y;
 //
-//	//ÓÒÖµÒıÓÃ
+//	//å³å€¼å¼•ç”¨
 //	int&& r1 = 10;
 //	
 //	double&& z = x + y;
 //
-//	//ÓÒÖµÒıÓÃÄÜ·ñ¸ø×óÖµÈ¡±ğÃû£¿
-//	//²»ÄÜÖ±½ÓÒıÓÃ£¬µ«¿ÉÒÔÒıÓÃmoveÖ®ºóµÄ×óÖµ
+//	//å³å€¼å¼•ç”¨èƒ½å¦ç»™å·¦å€¼å–åˆ«åï¼Ÿ
+//	//ä¸èƒ½ç›´æ¥å¼•ç”¨ï¼Œä½†å¯ä»¥å¼•ç”¨moveä¹‹åçš„å·¦å€¼
 //	int&& r4 = move(a);
 //}
 
-//void Fun(int& x) { cout << "×óÖµÒıÓÃ" << endl; }
-//void Fun(const int& x) { cout << "const ×óÖµÒıÓÃ" << endl; }
-//void Fun(int&& x) { cout << "ÓÒÖµÒıÓÃ" << endl; }
-//void Fun(const int&& x) { cout << "const ÓÒÖµÒıÓÃ" << endl; }
-//// Ä£°åÖĞµÄ&&²»´ú±íÓÒÖµÒıÓÃ£¬¶øÊÇÍòÄÜÒıÓÃ£¬Æä¼ÈÄÜ½ÓÊÕ×óÖµÓÖÄÜ½ÓÊÕÓÒÖµ¡£
-//// Ä£°åµÄÍòÄÜÒıÓÃÖ»ÊÇÌá¹©ÁËÄÜ¹»½ÓÊÕÍ¬Ê±½ÓÊÕ×óÖµÒıÓÃºÍÓÒÖµÒıÓÃµÄÄÜÁ¦£¬
-//// µ«ÊÇÒıÓÃÀàĞÍµÄÎ¨Ò»×÷ÓÃ¾ÍÊÇÏŞÖÆÁË½ÓÊÕµÄÀàĞÍ£¬ºóĞøÊ¹ÓÃÖĞ¶¼ÍË»¯³ÉÁË×óÖµ£¬
-//// ÎÒÃÇÏ£ÍûÄÜ¹»ÔÚ´«µİ¹ı³ÌÖĞ±£³ÖËüµÄ×óÖµ»òÕßÓÒÖµµÄÊôĞÔ, ¾ÍĞèÒªÓÃÎÒÃÇÏÂÃæÑ§Ï°µÄÍêÃÀ×ª·¢
+//void Fun(int& x) { cout << "å·¦å€¼å¼•ç”¨" << endl; }
+//void Fun(const int& x) { cout << "const å·¦å€¼å¼•ç”¨" << endl; }
+//void Fun(int&& x) { cout << "å³å€¼å¼•ç”¨" << endl; }
+//void Fun(const int&& x) { cout << "const å³å€¼å¼•ç”¨" << endl; }
+//// æ¨¡æ¿ä¸­çš„&&ä¸ä»£è¡¨å³å€¼å¼•ç”¨ï¼Œè€Œæ˜¯ä¸‡èƒ½å¼•ç”¨ï¼Œå…¶æ—¢èƒ½æ¥æ”¶å·¦å€¼åˆèƒ½æ¥æ”¶å³å€¼ã€‚
+//// æ¨¡æ¿çš„ä¸‡èƒ½å¼•ç”¨åªæ˜¯æä¾›äº†èƒ½å¤Ÿæ¥æ”¶åŒæ—¶æ¥æ”¶å·¦å€¼å¼•ç”¨å’Œå³å€¼å¼•ç”¨çš„èƒ½åŠ›ï¼Œ
+//// ä½†æ˜¯å¼•ç”¨ç±»å‹çš„å”¯ä¸€ä½œç”¨å°±æ˜¯é™åˆ¶äº†æ¥æ”¶çš„ç±»å‹ï¼Œåç»­ä½¿ç”¨ä¸­éƒ½é€€åŒ–æˆäº†å·¦å€¼ï¼Œ
+//// æˆ‘ä»¬å¸Œæœ›èƒ½å¤Ÿåœ¨ä¼ é€’è¿‡ç¨‹ä¸­ä¿æŒå®ƒçš„å·¦å€¼æˆ–è€…å³å€¼çš„å±æ€§, å°±éœ€è¦ç”¨æˆ‘ä»¬ä¸‹é¢å­¦ä¹ çš„å®Œç¾è½¬å‘
 //
 //template<typename T>
 //void PerfectForward(T&& t)
 //{
 //	Fun(t);
-//	//ÍêÃÀ×ª·¢£¬tÊÇ×óÖµÒıÓÃ£¬±£³Ö×óÖµÊôĞÔ
-//	//ÍêÃÀ×ª·¢£¬tÊÇÓÒÖµÒıÓÃ£¬±£³ÖÓÒÖµÊôĞÔ
+//	//å®Œç¾è½¬å‘ï¼Œtæ˜¯å·¦å€¼å¼•ç”¨ï¼Œä¿æŒå·¦å€¼å±æ€§
+//	//å®Œç¾è½¬å‘ï¼Œtæ˜¯å³å€¼å¼•ç”¨ï¼Œä¿æŒå³å€¼å±æ€§
 //	//Fun(forward<T>(t));
 //}
 //
 //
 //int main()
 //{
-//	PerfectForward(10); // ÓÒÖµ
+//	PerfectForward(10); // å³å€¼
 //	int a;
-//	PerfectForward(a); // ×óÖµ
-//	PerfectForward(std::move(a)); // ÓÒÖµ
+//	PerfectForward(a); // å·¦å€¼
+//	PerfectForward(std::move(a)); // å³å€¼
 //	const int b = 8;
-//	PerfectForward(b);  // const ×óÖµ
-//	PerfectForward(std::move(b)); // const ÓÒÖµ
+//	PerfectForward(b);  // const å·¦å€¼
+//	PerfectForward(std::move(b)); // const å³å€¼
 //
 //	//int a;
 //	int& r = a;
@@ -164,411 +165,464 @@ private:
 //}
 
 using namespace std;
-namespace AAA {
-#include<assert.h>
-	class string
+//namespace AAA {
+//#include<assert.h>
+//	class string
+//	{
+//		//friend ostream& operator<<(ostream& out, const string& s);
+//	public:
+//		/*string(int capacity = 16)
+//			:_str(new char[capacity])
+//			,_size(0)
+//			,_capacity(capacity)
+//		{
+//			_str[0] = '\0';
+//		}*/
+//		typedef char* iterator;
+//		typedef const char* const_iterator;
+//
+//		iterator begin() {
+//			return _str;
+//		}
+//		iterator end() {
+//			return _str + _size;
+//		}
+//		const_iterator begin() const {
+//			return _str;
+//		}
+//		const_iterator end() const {
+//			return _str + _size;
+//		}
+//
+//		string(const char* str = "")
+//			:_size(strlen(str))
+//			, _capacity(_size)
+//		{
+//			cout << "string(const char* str)" << endl;
+//			_str = new char[_capacity + 1];
+//			strcpy(_str, str);
+//		}
+//
+//
+//		~string() {
+//			delete[] _str;
+//			_str = nullptr;
+//			_size = _capacity = 0;
+//		}
+//
+//		/*string(const string& str) {
+//			_size = str._size;
+//			_capacity = str._capacity;
+//			_str = new char[str._capacity + 1];
+//			strcpy(_str, str.c_str());
+//		}*/
+//
+//		void swap(string& s) {
+//			std::swap(_str, s._str);
+//			std::swap(_size, s._size);
+//			std::swap(_capacity, s._capacity);
+//		}
+//
+//		//æ‹·è´æ„é€ æ”¹è¿›
+//		string(const string& str)
+//			:_str(nullptr)
+//			, _size(0)
+//			, _capacity(0)
+//		{
+//			cout << "string(const string& str)  æ·±æ‹·è´" << endl;
+//			string tmp(str._str);
+//			swap(tmp);
+//		}
+//
+//
+//		string(string&& s)
+//			:_str(nullptr)
+//		{
+//			cout << "string(string&& s) ç§»åŠ¨æ‹·è´" << endl;
+//			swap(s);
+//		}
+//
+//		/*string& operator=(const string& str) {
+//			if (this != &str)
+//			{
+//				char* tmp = new char[str._capacity + 1];
+//				strcpy(tmp, str.c_str());
+//				delete[] _str;
+//				_str = tmp;
+//				_size = str._size;
+//				_capacity = str._capacity;
+//			}
+//			return *this;
+//		}*/
+//
+//		//èµ‹å€¼é‡è½½æ”¹è¿›
+//		/*string& operator=(const string& str) {
+//			if (this != &str)
+//			{
+//				string tmp(str);
+//				swap(tmp);
+//			}
+//			return *this;
+//		}*/
+//
+//		//èµ‹å€¼é‡è½½å†æ”¹è¿›
+//		string& operator=(string tmp) {
+//			swap(tmp);
+//			return *this;
+//		}
+//
+//		string& operator=(string&& s) {
+//			cout << "string& operator=(string&& s) ç§»åŠ¨æ‹·è´" << endl;
+//			swap(s);
+//			return *this;
+//		}
+//
+//		char& operator[](int pos) {
+//			assert(pos < _size);
+//			return _str[pos];
+//		}
+//
+//		const char operator[](int pos) const {
+//			assert(pos < _size);
+//			return _str[pos];
+//		}
+//
+//		size_t capacity() const {
+//			return _capacity;
+//		}
+//
+//		size_t size() const {
+//			return _size;
+//		}
+//
+//		const char* c_str() const {
+//			return _str;
+//		}
+//
+//		void reserve(size_t n) {
+//			if (n > _capacity)
+//			{
+//				char* tmp = new char[n + 1];
+//				strcpy(tmp, _str); // strcpyä¼šæŠŠ\0ä¹Ÿæ‹·è´è¿‡å»
+//				delete[] _str;
+//				_str = tmp;
+//				_capacity = n;
+//			}
+//		}
+//
+//		void resize(size_t n, char ch = '\0') {
+//			if (n < _size)
+//			{
+//				_str[n] = '\0';
+//				_size = n;
+//			}
+//			else
+//			{
+//				reserve(n);
+//				for (size_t i = _size; i < n; i++)
+//				{
+//					_str[i] = ch;
+//					_size++;
+//				}
+//				_str[n] = '\0';
+//			}
+//		}
+//
+//		void push_back(char ch) {
+//			if (_size == _capacity)
+//			{
+//				reserve(_capacity == 0 ? 4 : _capacity * 2);
+//			}
+//			_str[_size] = ch;
+//			_str[_size + 1] = '\0';
+//			_size++;
+//		}
+//
+//		void append(const char* str) {
+//			int len = strlen(str);
+//
+//			if (_size + len > _capacity)
+//			{
+//				reserve(_size + len);
+//			}
+//			strcpy(_str + _size, str);
+//			_size += len;
+//		}
+//
+//		string& operator+=(char ch) {
+//			push_back(ch);
+//			return *this;
+//		}
+//
+//		string& operator+=(const char* str) {
+//			append(str);
+//			return *this;
+//		}
+//
+//		void insert(size_t pos, char ch) {
+//			assert(pos >= 0 || pos <= _size);
+//			if (_size == _capacity)
+//			{
+//				reserve(_capacity == 0 ? 4 : _capacity * 2);
+//			}
+//			size_t end = _size + 1;
+//			while (end > pos)
+//			{
+//				_str[end] = _str[end - 1];
+//				end--;
+//			}
+//			_str[pos] = ch;
+//			_size++;
+//		}
+//
+//		void insert(int pos, const char* str) {
+//			assert(pos >= 0 || pos <= _size);
+//			int len = strlen(str);
+//			if (_size + len > _capacity)
+//			{
+//				reserve(_size + len);
+//			}
+//			size_t end = _size + len;
+//			while (end >= pos + len)
+//			{
+//				_str[end] = _str[end - len];
+//				end--;
+//			}
+//			memcpy(_str + pos, str, strlen(str));
+//			_size += len;
+//		}
+//
+//		void erase(int pos, int len = npos) {
+//			assert(pos >= 0 || pos < _size);
+//			if (len == npos || pos + len >= _size)
+//			{
+//				_str[pos] = '\0';
+//				_size = pos;
+//			}
+//			else {
+//				size_t end = pos;
+//				while (end <= _size - len)
+//				{
+//					_str[end] = _str[end + len];
+//					end++;
+//				}
+//				_size -= len;
+//			}
+//		}
+//
+//		size_t find(char ch, size_t pos = 0) {
+//			for (size_t i = pos; i < _size; i++)
+//			{
+//				if (_str[i] == ch) {
+//					return i;
+//				}
+//			}
+//			return npos;
+//		}
+//
+//		size_t find(const char* sub, size_t pos = 0) {
+//			const char* found = strstr(_str + pos, sub);
+//			if (found)
+//			{
+//				return found - _str;
+//			}
+//			else {
+//				return npos;
+//			}
+//		}
+//
+//		string substr(size_t pos, size_t len = npos) {
+//			string s;
+//			size_t end = pos + len;
+//			if (len == npos || pos + len >= _size)
+//			{
+//				end = _size;
+//				len = _size - pos;
+//			}
+//			s.reserve(len);
+//			for (size_t i = pos; i < end; i++)
+//			{
+//				s += _str[i];
+//			}
+//			return s;
+//		}
+//
+//		bool operator<(const string& s) {
+//			return strcmp(_str, s._str) < 0;
+//		}
+//
+//		bool operator==(const string& s) {
+//			return strcmp(_str, s._str) == 0;
+//		}
+//		bool operator<=(const string& s) {
+//			return *this < s || *this == s;
+//		}
+//
+//		bool operator>(const string& s) {
+//			return !(*this <= s);
+//		}
+//
+//		bool operator>=(const string& s) {
+//			return !(*this < s);
+//		}
+//
+//		bool operator!=(const string& s) {
+//			return !(*this == s);
+//		}
+//
+//		void clear() {
+//			_str[0] = '\0';
+//			_size = 0;
+//		}
+//
+//	private:
+//		char* _str;
+//		int _size;
+//		int _capacity;
+//		//const static size_t npos = -1; //ç‰¹ä¾‹, ä¸€èˆ¬æ¥è¯´é™æ€å˜é‡ä¸èƒ½åœ¨è¿™é‡Œåˆå§‹åŒ–ï¼Œä½†æ˜¯const static intå¯ä»¥
+//	public:
+//		const static size_t npos; //ç‰¹ä¾‹
+//
+//	};
+//	template<class T>
+//	struct ListNode
+//	{
+//		ListNode* _next = nullptr;
+//		ListNode* _prev = nullptr;
+//		T _data;
+//		/*ListNode(const T& val)
+//			:_data(val)
+//			,_next(nullptr)
+//			,_prev(nullptr){}*/
+//
+//		//ä½¿ç”¨ä¸‹æ–¹çš„ä¸‡èƒ½å¼•ç”¨ï¼Œå°±å¯ä»¥ä¸å¿…å†™ä¸Šé¢çš„æ„é€ å‡½æ•°ï¼Œä½†æ˜¯ä¸‹é¢çš„Tyä¸€å®šå¾—æ˜¯æ¨å¯¼å‡ºæ¥çš„
+//		template<class Ty>
+//		ListNode(Ty&& val)
+//			:_data(std::forward<Ty>(val))
+//			, _next(nullptr)
+//			, _prev(nullptr) {}
+//	};
+//
+//	template<class T>
+//	class List
+//	{
+//		typedef ListNode<T> Node;
+//	public:
+//		List()
+//		{
+//			_head = new Node(T());
+//			_head->_next = _head;
+//			_head->_prev = _head;
+//		}
+//		void PushBack(const T& x)
+//		{
+//			//Insert(_head, x);
+//			Insert(_head, x);
+//		}
+//
+//		void PushBack(T&& x)
+//		{
+//			//Insert(_head, x);
+//			Insert(_head, std::forward<T>(x));
+//		}
+//
+//		void PushFront(T&& x)
+//		{
+//			//Insert(_head->_next, x);
+//			Insert(_head->_next, forward<T>(x));
+//		}
+//		void Insert(Node* pos, T&& x)
+//		{
+//			Node* prev = pos->_prev;
+//			Node* newnode = new Node(std::forward<T>(x)); // å…³é”®ä½ç½®
+//			// prev newnode pos
+//			prev->_next = newnode;
+//			newnode->_prev = prev;
+//			newnode->_next = pos;
+//			pos->_prev = newnode;
+//		}
+//
+//		void Insert(Node* pos, const T& x)
+//		{
+//			Node* prev = pos->_prev;
+//			Node* newnode = new Node(x); // å…³é”®ä½ç½®
+//			// prev newnode pos
+//			prev->_next = newnode; newnode->_prev = prev;
+//			newnode->_next = pos;
+//			pos->_prev = newnode;
+//		}
+//	private:
+//		Node* _head;
+//	};
+//
+//
+//}
+//int main()
+//{
+//	AAA::List<AAA::string> lt;
+//	AAA::string str1("11111");
+//	lt.PushBack(str1);
+//	cout << endl;
+//
+//	AAA::string str2("2222");
+//	lt.PushBack(move(str2));
+//	cout << endl;
+//
+//	lt.PushBack("333333333");
+//	cout << endl;
+//
+//	return 0;
+//}
+
+struct Goods
+{
+	string _name;
+	double _price;
+	int _evaluate;
+	Goods(const char* str, double price, int evaluate)
+		:_name(str)
+		, _price(price)
+		, _evaluate(evaluate)
+	{}
+};
+struct ComparePriceLess
+{
+	bool operator()(const Goods& gl, const Goods& gr)
 	{
-		//friend ostream& operator<<(ostream& out, const string& s);
-	public:
-		/*string(int capacity = 16)
-			:_str(new char[capacity])
-			,_size(0)
-			,_capacity(capacity)
-		{
-			_str[0] = '\0';
-		}*/
-		typedef char* iterator;
-		typedef const char* const_iterator;
+		return gl._price < gr._price;
+	}
+};
 
-		iterator begin() {
-			return _str;
-		}
-		iterator end() {
-			return _str + _size;
-		}
-		const_iterator begin() const {
-			return _str;
-		}
-		const_iterator end() const {
-			return _str + _size;
-		}
+struct ComparePriceGreater
+{
+	bool operator()(const Goods& g1, const Goods& g2) {
+		return g1._price > g2._price;
+	}
+};
 
-		string(const char* str = "")
-			:_size(strlen(str))
-			, _capacity(_size)
-		{
-			cout << "string(const char* str)" << endl;
-			_str = new char[_capacity + 1];
-			strcpy(_str, str);
-		}
-
-
-		~string() {
-			delete[] _str;
-			_str = nullptr;
-			_size = _capacity = 0;
-		}
-
-		/*string(const string& str) {
-			_size = str._size;
-			_capacity = str._capacity;
-			_str = new char[str._capacity + 1];
-			strcpy(_str, str.c_str());
-		}*/
-
-		void swap(string& s) {
-			std::swap(_str, s._str);
-			std::swap(_size, s._size);
-			std::swap(_capacity, s._capacity);
-		}
-
-		//¿½±´¹¹Ôì¸Ä½ø
-		string(const string& str)
-			:_str(nullptr)
-			, _size(0)
-			, _capacity(0)
-		{
-			cout << "string(const string& str)  Éî¿½±´" << endl;
-			string tmp(str._str);
-			swap(tmp);
-		}
-
-
-		string(string&& s)
-			:_str(nullptr)
-		{
-			cout << "string(string&& s) ÒÆ¶¯¿½±´" << endl;
-			swap(s);
-		}
-
-		/*string& operator=(const string& str) {
-			if (this != &str)
-			{
-				char* tmp = new char[str._capacity + 1];
-				strcpy(tmp, str.c_str());
-				delete[] _str;
-				_str = tmp;
-				_size = str._size;
-				_capacity = str._capacity;
-			}
-			return *this;
-		}*/
-
-		//¸³ÖµÖØÔØ¸Ä½ø
-		/*string& operator=(const string& str) {
-			if (this != &str)
-			{
-				string tmp(str);
-				swap(tmp);
-			}
-			return *this;
-		}*/
-
-		//¸³ÖµÖØÔØÔÙ¸Ä½ø
-		string& operator=(string tmp) {
-			swap(tmp);
-			return *this;
-		}
-
-		string& operator=(string&& s) {
-			cout << "string& operator=(string&& s) ÒÆ¶¯¿½±´" << endl;
-			swap(s);
-			return *this;
-		}
-
-		char& operator[](int pos) {
-			assert(pos < _size);
-			return _str[pos];
-		}
-
-		const char operator[](int pos) const {
-			assert(pos < _size);
-			return _str[pos];
-		}
-
-		size_t capacity() const {
-			return _capacity;
-		}
-
-		size_t size() const {
-			return _size;
-		}
-
-		const char* c_str() const {
-			return _str;
-		}
-
-		void reserve(size_t n) {
-			if (n > _capacity)
-			{
-				char* tmp = new char[n + 1];
-				strcpy(tmp, _str); // strcpy»á°Ñ\0Ò²¿½±´¹ıÈ¥
-				delete[] _str;
-				_str = tmp;
-				_capacity = n;
-			}
-		}
-
-		void resize(size_t n, char ch = '\0') {
-			if (n < _size)
-			{
-				_str[n] = '\0';
-				_size = n;
-			}
-			else
-			{
-				reserve(n);
-				for (size_t i = _size; i < n; i++)
-				{
-					_str[i] = ch;
-					_size++;
-				}
-				_str[n] = '\0';
-			}
-		}
-
-		void push_back(char ch) {
-			if (_size == _capacity)
-			{
-				reserve(_capacity == 0 ? 4 : _capacity * 2);
-			}
-			_str[_size] = ch;
-			_str[_size + 1] = '\0';
-			_size++;
-		}
-
-		void append(const char* str) {
-			int len = strlen(str);
-
-			if (_size + len > _capacity)
-			{
-				reserve(_size + len);
-			}
-			strcpy(_str + _size, str);
-			_size += len;
-		}
-
-		string& operator+=(char ch) {
-			push_back(ch);
-			return *this;
-		}
-
-		string& operator+=(const char* str) {
-			append(str);
-			return *this;
-		}
-
-		void insert(size_t pos, char ch) {
-			assert(pos >= 0 || pos <= _size);
-			if (_size == _capacity)
-			{
-				reserve(_capacity == 0 ? 4 : _capacity * 2);
-			}
-			size_t end = _size + 1;
-			while (end > pos)
-			{
-				_str[end] = _str[end - 1];
-				end--;
-			}
-			_str[pos] = ch;
-			_size++;
-		}
-
-		void insert(int pos, const char* str) {
-			assert(pos >= 0 || pos <= _size);
-			int len = strlen(str);
-			if (_size + len > _capacity)
-			{
-				reserve(_size + len);
-			}
-			size_t end = _size + len;
-			while (end >= pos + len)
-			{
-				_str[end] = _str[end - len];
-				end--;
-			}
-			memcpy(_str + pos, str, strlen(str));
-			_size += len;
-		}
-
-		void erase(int pos, int len = npos) {
-			assert(pos >= 0 || pos < _size);
-			if (len == npos || pos + len >= _size)
-			{
-				_str[pos] = '\0';
-				_size = pos;
-			}
-			else {
-				size_t end = pos;
-				while (end <= _size - len)
-				{
-					_str[end] = _str[end + len];
-					end++;
-				}
-				_size -= len;
-			}
-		}
-
-		size_t find(char ch, size_t pos = 0) {
-			for (size_t i = pos; i < _size; i++)
-			{
-				if (_str[i] == ch) {
-					return i;
-				}
-			}
-			return npos;
-		}
-
-		size_t find(const char* sub, size_t pos = 0) {
-			const char* found = strstr(_str + pos, sub);
-			if (found)
-			{
-				return found - _str;
-			}
-			else {
-				return npos;
-			}
-		}
-
-		string substr(size_t pos, size_t len = npos) {
-			string s;
-			size_t end = pos + len;
-			if (len == npos || pos + len >= _size)
-			{
-				end = _size;
-				len = _size - pos;
-			}
-			s.reserve(len);
-			for (size_t i = pos; i < end; i++)
-			{
-				s += _str[i];
-			}
-			return s;
-		}
-
-		bool operator<(const string& s) {
-			return strcmp(_str, s._str) < 0;
-		}
-
-		bool operator==(const string& s) {
-			return strcmp(_str, s._str) == 0;
-		}
-		bool operator<=(const string& s) {
-			return *this < s || *this == s;
-		}
-
-		bool operator>(const string& s) {
-			return !(*this <= s);
-		}
-
-		bool operator>=(const string& s) {
-			return !(*this < s);
-		}
-
-		bool operator!=(const string& s) {
-			return !(*this == s);
-		}
-
-		void clear() {
-			_str[0] = '\0';
-			_size = 0;
-		}
-
-	private:
-		char* _str;
-		int _size;
-		int _capacity;
-		//const static size_t npos = -1; //ÌØÀı, Ò»°ãÀ´Ëµ¾²Ì¬±äÁ¿²»ÄÜÔÚÕâÀï³õÊ¼»¯£¬µ«ÊÇconst static int¿ÉÒÔ
-	public:
-		const static size_t npos; //ÌØÀı
-
-	};
-	template<class T>
-	struct ListNode
-	{
-		ListNode* _next = nullptr;
-		ListNode* _prev = nullptr;
-		T _data;
-		/*ListNode(const T& val)
-			:_data(val)
-			,_next(nullptr)
-			,_prev(nullptr){}*/
-		template<class Ty>
-		ListNode(Ty&& val)
-			:_data(std::forward<Ty>(val))
-			, _next(nullptr)
-			, _prev(nullptr) {}
-	};
-
-	template<class T>
-	class List
-	{
-		typedef ListNode<T> Node;
-	public:
-		List()
-		{
-			_head = new Node(T());
-			_head->_next = _head;
-			_head->_prev = _head;
-		}
-		void PushBack(const T& x)
-		{
-			//Insert(_head, x);
-			Insert(_head, x);
-		}
-
-		void PushBack(T&& x)
-		{
-			//Insert(_head, x);
-			Insert(_head, std::forward<T>(x));
-		}
-
-		void PushFront(T&& x)
-		{
-			//Insert(_head->_next, x);
-			Insert(_head->_next, forward<T>(x));
-		}
-		void Insert(Node* pos, T&& x)
-		{
-			Node* prev = pos->_prev;
-			Node* newnode = new Node(std::forward<T>(x)); // ¹Ø¼üÎ»ÖÃ
-			// prev newnode pos
-			prev->_next = newnode;
-			newnode->_prev = prev;
-			newnode->_next = pos;
-			pos->_prev = newnode;
-		}
-
-		void Insert(Node* pos, const T& x)
-		{
-			Node* prev = pos->_prev;
-			Node* newnode = new Node(x); // ¹Ø¼üÎ»ÖÃ
-			// prev newnode pos
-			prev->_next = newnode; newnode->_prev = prev;
-			newnode->_next = pos;
-			pos->_prev = newnode;
-		}
-	private:
-		Node* _head;
-	};
-
-
-}
 int main()
 {
-	AAA::List<AAA::string> lt;
-	AAA::string str1("11111");
-	lt.PushBack(str1);
+	int array[] = { 4,1,8,5,3,7,0,9,2,6 };
+	sort(array, array + sizeof(array) / sizeof(int), greater<int>());
+	for (auto e : array) {
+		cout << e << " ";
+	}
 	cout << endl;
 
-	AAA::string str2("2222");
-	lt.PushBack(move(str2));
-	cout << endl;
+	vector<Goods> v = { { "è‹¹æœ", 2.1, 5 }, { "é¦™è•‰", 3, 4 }, { "æ©™å­", 2.2,
+   3 }, { "è è", 1.5, 4 } };
+	sort(v.begin(), v.end(), ComparePriceLess());
+	sort(v.begin(), v.end(), ComparePriceGreater());
 
-	lt.PushBack("333333333");
-	cout << endl;
+	sort(v.begin(), v.end(), [](const Goods& g1, const Goods& g2) {return g1._price < g2._price; });
+	sort(v.begin(), v.end(), [](const Goods& g1, const Goods& g2) {return g1._price > g2._price; });
+	sort(v.begin(), v.end(), [](const Goods& g1, const Goods& g2) {return g1._evaluate > g2._evaluate; });
+	sort(v.begin(), v.end(), [](const Goods& g1, const Goods& g2) {return g1._evaluate > g2._evaluate; });
 
-	return 0;
+	//å±€éƒ¨çš„åŒ¿åå‡½æ•°å¯¹è±¡
+	auto cmp1 = [](int x, int y) {return x > y; };
+	cout << cmp1(1, 2) << endl;
+
+
 }
-
 
