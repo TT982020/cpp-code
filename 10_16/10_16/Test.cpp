@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 using namespace std;
 
 //int main() {
@@ -32,47 +33,106 @@ using namespace std;
 //}
 
 
-void _ShowList() {
-	cout << endl;
-}
+//void _ShowList() {
+//	cout << endl;
+//}
+//
+//
+//template<class T,class ...Args>
+//void _ShowList(T val, Args... args) {
+//	cout << val << " ";
+//	_ShowList(args...);
+//}
+//
+////Args... 表示0-N个参数包
+//template<class ...Args>
+//void CppPrint(Args... args) {
+//	_ShowList(args...);
+//}
+//template <class T>
+//void PrintArg(T t)
+//{
+//	cout << t << " ";
+//}
+////展开函数
+//template <class ...Args>
+//void ShowList(Args... args)
+//{
+//	int arr[] = { (PrintArg(args), 0)... };
+//	cout << endl;
+//}
+//
+//int main() {
+//	CppPrint();
+//	CppPrint(1);
+//	CppPrint(1,2);
+//	CppPrint(1,2,"xx");
+//
+//	ShowList(1);
+//	ShowList(1, 'A');
+//	ShowList(1, 'A', std::string("sort"));
+//
+//	return 0;
+//}
 
+class Date {
+public:
+	Date(int year = 2020, int month = 1, int day = 1)
+		:_year(year)
+		,_month(month)
+		,_day(day){}
+private:
+	int _year;
+	int _month;
+	int _day;
+};
 
-template<class T,class ...Args>
-void _ShowList(T val, Args... args) {
-	cout << val << " ";
-	_ShowList(args...);
-}
-
-//Args... 表示0-N个参数包
 template<class ...Args>
-void CppPrint(Args... args) {
-	_ShowList(args...);
+Date* Create(Args... args) {
+	Date* ret = new Date(args...);
+	return ret;
 }
-template <class T>
-void PrintArg(T t)
+
+class Person
 {
-	cout << t << " ";
-}
-//展开函数
-template <class ...Args>
-void ShowList(Args... args)
-{
-	int arr[] = { (PrintArg(args), 0)... };
-	cout << endl;
-}
+public:
+	Person(const char* name = "", int age = 0)
+		:_name(name)
+		, _age(age)
+	{}
+	Person(const Person& p)
+		:_name(p._name)
+		, _age(p._age)
+	{} Person(Person && p) = default;
+private:
+	string _name;
+	int _age;
+};
+
 
 int main() {
-	CppPrint();
-	CppPrint(1);
-	CppPrint(1,2);
-	CppPrint(1,2,"xx");
+	Date* d1 = Create(2023, 10, 17);
+	Date* d2 = Create(2023, 10);
+	Date* d3 = Create();
+	Date d4(2023, 10, 17);
+	Date* d5 = Create(d4);
 
-	ShowList(1);
-	ShowList(1, 'A');
-	ShowList(1, 'A', std::string("sort"));
+	std::list<std::pair<int, string>> mylist;
+	mylist.emplace_back(10, "a");
+	mylist.emplace_back(20, "b");
 
+	mylist.push_back(make_pair(10, "a"));
+	mylist.push_back({ 30,"b"});
+
+	Person s1;
+	Person s2 = s1;
+	Person s3 = std::move(s1);
 	return 0;
+	
+	return 0;
+
 }
+
 ////////////////////////////  包装器
 //template<class F, class T>
 //T useF(F f, T x)
