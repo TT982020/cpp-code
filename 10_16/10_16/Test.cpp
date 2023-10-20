@@ -207,45 +207,102 @@ public:
 		return (x - y) * rate;
 	}
 };
+int div()
+{
+	int a, b;
+	cin >> a >> b;
+	if (b == 0)
+		throw invalid_argument("除0错误");
+	return a / b;
+}
 
-int main()
-{ // 函数名
-	cout << useF(f, 11.11) << endl;
-	// 函数对象
-	cout << useF(Functor(), 11.11) << endl;
-	// lamber表达式
-	cout << useF([](double d)->double { return d / 4; }, 11.11) << endl;
-
-	list <function<double(double)>> lst = { f,Functor(), [](double x) {return x / 4; } };
-	double n = 10.0;
-	for (auto f : lst) {
-		cout << f(n) << endl;
+template<class T>
+//RAII
+//资源交给对象管理，对象生命周期内，资源有效，生命周期到了，资源释放
+//1. RAII 管控资源释放
+//2. 像指针一样
+class SmartPtr {
+public:
+	SmartPtr(T* ptr)
+		:_ptr(ptr) {
+		cout << "SmartPtr(T* ptr)" << endl;
+	}
+	~SmartPtr() {
+		cout << "~SmartPtr()" << endl;
+		delete _ptr;
 	}
 
-	function<int(int, int)> rsub = bind(Sub, placeholders::_1, placeholders::_2);
-	cout << rsub(1, 2) << endl;
+	T& operator*() {
+		return *_ptr;
+	}
 
-	function<double(int, int)> plus1 = bind(Plus, placeholders::_1, placeholders::_2, 4.0);
-	function<double(int, int)> plus2 = bind(Plus, placeholders::_1, placeholders::_2, 4.2);
-	function<double(int, int)> plus3 = bind(Plus, placeholders::_1, placeholders::_2, 4.3);
-	cout << plus1(5, 3) << endl;
-	cout << plus2(5, 3) << endl;
-	cout << plus3(5, 3) << endl;
+	T* operator->() {
+		return _ptr;
+	}
+private:
+	T* _ptr;
+};
 
-	function<double(int, int)> pplus1 = bind(PPlus, placeholders::_1, 4.0, placeholders::_2);
-	function<double(int, int)> pplus2 = bind(PPlus, placeholders::_1, 4.2, placeholders::_2);
-	function<double(int, int)> pplus3 = bind(PPlus, placeholders::_1, 4.3, placeholders::_2);
-	cout << pplus1(5, 3) << endl;
-	cout << pplus2(5, 3) << endl;
-	cout << pplus3(5, 3) << endl;
+int main() {
+	try
+	{
+		
+		SmartPtr<pair< string, string >> sp1(new pair<string, string>{"1","2"});
+		div();
+		SmartPtr<pair< string, string >> sp2(new pair<string, string>);
+		SmartPtr<pair< string, string >> sp3(new pair<string, string>);
 
-	function<int(int, int)> sub1 = bind(&SubType::sub, placeholders::_1, placeholders::_2);
-	SubType st;
-	function<int(int, int)> sub2 = bind(&SubType::ssub, &st, placeholders::_1, placeholders::_2, 4.0);
-	function<int(int, int)> sub3 = bind(&SubType::ssub, SubType(), placeholders::_1, placeholders::_2, 4.0);
-	cout << sub1(2, 3) << endl;
-	cout << sub2(2, 3) << endl;
-	cout << sub3(2, 3) << endl;
+		SmartPtr<string> sp4(new string("xxxx"));
 
-	return 0;
+		cout << *sp4 << endl;
+		cout << sp1->first<< " "<< sp1->first << endl;
+		div();
+	}
+	catch (const std::exception& e)
+	{
+		cout << e.what() << endl;
+	}
+	
 }
+
+//int main()
+//{ // 函数名
+//	cout << useF(f, 11.11) << endl;
+//	// 函数对象
+//	cout << useF(Functor(), 11.11) << endl;
+//	// lamber表达式
+//	cout << useF([](double d)->double { return d / 4; }, 11.11) << endl;
+//
+//	list <function<double(double)>> lst = { f,Functor(), [](double x) {return x / 4; } };
+//	double n = 10.0;
+//	for (auto f : lst) {
+//		cout << f(n) << endl;
+//	}
+//
+//	function<int(int, int)> rsub = bind(Sub, placeholders::_1, placeholders::_2);
+//	cout << rsub(1, 2) << endl;
+//
+//	function<double(int, int)> plus1 = bind(Plus, placeholders::_1, placeholders::_2, 4.0);
+//	function<double(int, int)> plus2 = bind(Plus, placeholders::_1, placeholders::_2, 4.2);
+//	function<double(int, int)> plus3 = bind(Plus, placeholders::_1, placeholders::_2, 4.3);
+//	cout << plus1(5, 3) << endl;
+//	cout << plus2(5, 3) << endl;
+//	cout << plus3(5, 3) << endl;
+//
+//	function<double(int, int)> pplus1 = bind(PPlus, placeholders::_1, 4.0, placeholders::_2);
+//	function<double(int, int)> pplus2 = bind(PPlus, placeholders::_1, 4.2, placeholders::_2);
+//	function<double(int, int)> pplus3 = bind(PPlus, placeholders::_1, 4.3, placeholders::_2);
+//	cout << pplus1(5, 3) << endl;
+//	cout << pplus2(5, 3) << endl;
+//	cout << pplus3(5, 3) << endl;
+//
+//	function<int(int, int)> sub1 = bind(&SubType::sub, placeholders::_1, placeholders::_2);
+//	SubType st;
+//	function<int(int, int)> sub2 = bind(&SubType::ssub, &st, placeholders::_1, placeholders::_2, 4.0);
+//	function<int(int, int)> sub3 = bind(&SubType::ssub, SubType(), placeholders::_1, placeholders::_2, 4.0);
+//	cout << sub1(2, 3) << endl;
+//	cout << sub2(2, 3) << endl;
+//	cout << sub3(2, 3) << endl;
+//
+//	return 0;
+//}
