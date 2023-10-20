@@ -243,27 +243,35 @@ private:
 	T* _ptr;
 };
 
+//int main() {
+//	try
+//	{
+//		
+//		SmartPtr<pair< string, string >> sp1(new pair<string, string>{"1","2"});
+//		div();
+//		SmartPtr<pair< string, string >> sp2(new pair<string, string>);
+//		SmartPtr<pair< string, string >> sp3(new pair<string, string>);
+//
+//		SmartPtr<string> sp4(new string("xxxx"));
+//
+//		cout << *sp4 << endl;
+//		cout << sp1->first<< " "<< sp1->first << endl;
+//		div();
+//	}
+//	catch (const std::exception& e)
+//	{
+//		cout << e.what() << endl;
+//	}
+//	
+//}
+
 int main() {
-	try
-	{
-		
-		SmartPtr<pair< string, string >> sp1(new pair<string, string>{"1","2"});
-		div();
-		SmartPtr<pair< string, string >> sp2(new pair<string, string>);
-		SmartPtr<pair< string, string >> sp3(new pair<string, string>);
-
-		SmartPtr<string> sp4(new string("xxxx"));
-
-		cout << *sp4 << endl;
-		cout << sp1->first<< " "<< sp1->first << endl;
-		div();
-	}
-	catch (const std::exception& e)
-	{
-		cout << e.what() << endl;
-	}
-	
+	SmartPtr<string> sp1(new string("xxxx"));
+	SmartPtr<string> sp2(new string("yyyy"));
+	//存在浅拷贝，两次析构，内存泄漏的问题
+	//sp1 = sp2;
 }
+
 
 //int main()
 //{ // 函数名
