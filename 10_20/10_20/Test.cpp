@@ -1,5 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
 #include <memory>
+#include <functional>
 using namespace std;
 #include "SmartPtr.h"
 class A {
@@ -71,26 +73,44 @@ public:
 //	sp2->_prev = sp1;
 //}
 
-struct Node
+//struct Node
+//{
+//	A _val;
+//	/*name::shared_ptr<Node> _next;
+//	name::shared_ptr<Node> _prev;*/
+//	name::weak_ptr<Node> _next;
+//	name::weak_ptr<Node> _prev;
+//};
+//
+//int main() {
+//	name::shared_ptr<Node> sp1(new Node);
+//	name::shared_ptr<Node> sp2(new Node);
+//
+//	cout << sp1.use_count() << endl;
+//	cout << sp2.use_count() << endl;
+//
+//	//存在循环引用的问题
+//	sp1->_next = sp2;
+//	sp2->_prev = sp1;
+//
+//	cout << sp1.use_count() << endl;
+//	cout << sp2.use_count() << endl;
+//}
+
+template<class T>
+struct DeleteArray
 {
-	A _val;
-	/*name::shared_ptr<Node> _next;
-	name::shared_ptr<Node> _prev;*/
-	name::weak_ptr<Node> _next;
-	name::weak_ptr<Node> _prev;
+	void operator()(T* ptr) {
+		delete[] ptr;
+	}
 };
 
 int main() {
-	name::shared_ptr<Node> sp1(new Node);
-	name::shared_ptr<Node> sp2(new Node);
+	//定制删除器
+	name::shared_ptr<A> sp1(new A[10], DeleteArray<A>());
+	name::shared_ptr<A> sp2((A*)malloc(sizeof(A)), [](A* ptr) {free(ptr); });
 
-	cout << sp1.use_count() << endl;
-	cout << sp2.use_count() << endl;
+	name::shared_ptr<FILE> sp3(fopen("Test.cpp", "r"), [](FILE* fp) {fclose(fp); });
 
-	//存在循环引用的问题
-	sp1->_next = sp2;
-	sp2->_prev = sp1;
-
-	cout << sp1.use_count() << endl;
-	cout << sp2.use_count() << endl;
+	name::shared_ptr<A> sp4(new A(1));
 }

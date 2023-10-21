@@ -73,6 +73,15 @@ namespace name {
 
 		}
 
+		//function<void(T*)> _del; 可以在类上加一个模板参数D，如果在函数上加，那么
+		//成员变量不能有D。解决办法是用function<void(T*)> _del;声明一个变量
+		template<class D>
+		shared_ptr(T* ptr, D del)
+			:_ptr(ptr)
+			, _pcount(new int(1)) 
+			, _del(del)
+		{}
+
 		shared_ptr(const shared_ptr& sp)
 			:_ptr(sp._ptr)
 			, _pcount(sp._pcount) {
@@ -83,7 +92,9 @@ namespace name {
 			if (--(*_pcount) == 0)
 			{
 				cout << "delete " << _ptr << endl;
-				delete _ptr;
+				/*delete _ptr;
+				delete _pcount;*/
+				_del(_ptr);
 				delete _pcount;
 			}
 		}
@@ -124,6 +135,7 @@ namespace name {
 	private:
 		T* _ptr;
 		int* _pcount;
+		function<void(T*)> _del = [](T* ptr) {delete ptr; };
 	};
 
 	template<class T>
