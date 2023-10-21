@@ -105,12 +105,18 @@ struct DeleteArray
 	}
 };
 
+//int main() {
+//	//定制删除器
+//	name::shared_ptr<A> sp1(new A[10], DeleteArray<A>());
+//	name::shared_ptr<A> sp2((A*)malloc(sizeof(A)), [](A* ptr) {free(ptr); });
+//
+//	name::shared_ptr<FILE> sp3(fopen("Test.cpp", "r"), [](FILE* fp) {fclose(fp); });
+//
+//	name::shared_ptr<A> sp4(new A(1));
+//}
+
 int main() {
-	//定制删除器
-	name::shared_ptr<A> sp1(new A[10], DeleteArray<A>());
-	name::shared_ptr<A> sp2((A*)malloc(sizeof(A)), [](A* ptr) {free(ptr); });
+	char* ptr = new char[1024 * 1024 * 1024];
 
-	name::shared_ptr<FILE> sp3(fopen("Test.cpp", "r"), [](FILE* fp) {fclose(fp); });
-
-	name::shared_ptr<A> sp4(new A(1));
+	return 0;
 }
