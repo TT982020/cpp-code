@@ -4,5 +4,5 @@ using namespace std;
 #include "BinarySearchTree.h"
 
 int main() {
-	TestBSTree1();
+	key_value::TestBSTree2();
 }
