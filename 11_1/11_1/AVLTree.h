@@ -212,29 +212,29 @@ public:
 		}
 	}
 
-	void InOrder() {
-		_InOrder(_root);
-	}
+	//void InOrder() {
+	//	_InOrder(_root);
+	//}
 
-	void _InOrder(Node* root) {
-		if (root == nullptr) {
-			return;
-		}
-		_InOrder(root->_left);
-		cout << root->_kv.first << ":" << root->_kv.second;
-		if (root->_left)
-		{
-			cout << "left:" << root->_left->_kv.first << " ";
-		}
-		if (root->_right)
-		{
-			cout << "right:" << root->_right->_kv.first << " ";
-		}
-		cout << endl;
-		
-		
-		_InOrder(root->_right);
-	}
+	//void _InOrder(Node* root) {
+	//	if (root == nullptr) {
+	//		return;
+	//	}
+	//	_InOrder(root->_left);
+	//	cout << root->_kv.first << ":" << root->_kv.second;
+	//	if (root->_left)
+	//	{
+	//		cout << "left:" << root->_left->_kv.first << " ";
+	//	}
+	//	if (root->_right)
+	//	{
+	//		cout << "right:" << root->_right->_kv.first << " ";
+	//	}
+	//	cout << endl;
+	//	
+	//	
+	//	_InOrder(root->_right);
+	//}
 	int Height(Node* root) {
 		if (root == nullptr)
 		{
@@ -244,6 +244,7 @@ public:
 		int rightH = Height(root->_right);
 		return leftH > rightH ? leftH + 1 : rightH + 1;
 	}
+
 	bool isBalance() {
 		return _isBalance(_root);
 	}

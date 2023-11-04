@@ -31,6 +31,4 @@ int main() {
 		//cout << t.isBalance() << endl;
 	}
 	cout << t.isBalance() << endl;
-	
-	
 }
