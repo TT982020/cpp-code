@@ -70,7 +70,6 @@ public:
 			{
 				break;
 			}
-			
 			else if (parent->_bf == 1 || parent->_bf == -1) {
 				cur = parent;
 				parent = parent->_parent;
@@ -90,6 +89,7 @@ public:
 				else if (parent->_bf == -2 && cur->_bf == 1) {
 					rotateLR(parent);
 				}
+				break;
 			}
 			else {
 				assert(false);
@@ -175,7 +175,7 @@ public:
 		else if (bf == 1) {
 			curleft->_bf = 0;
 			parent->_bf = -1;
-			cur->_left = 0;
+			cur->_bf = 0;
 		}
 		else if (bf == -1) {
 			curleft->_bf = 0;
@@ -242,7 +242,7 @@ public:
 		}
 		int leftH = Height(root->_left);
 		int rightH = Height(root->_right);
-		return max(leftH, rightH) + 1;
+		return leftH > rightH ? leftH + 1 : rightH + 1;
 	}
 	bool isBalance() {
 		return _isBalance(_root);
