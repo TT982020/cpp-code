@@ -1,3 +1,4 @@
+
 #pragma once
 #include <iostream>
 #include <assert.h>
@@ -10,16 +11,16 @@ enum Color
 	BLACK
 };
 
-template<class K, class V>
+template<class T>
 struct RBTreeNode
 {
-	RBTreeNode<K, V>* _left;
-	RBTreeNode<K, V>* _right;
-	RBTreeNode<K, V>* _parent;
-	pair<K, V> _kv;
+	RBTreeNode<T>* _left;
+	RBTreeNode<T>* _right;
+	RBTreeNode<T>* _parent;
+	T _data;
 	Color _col;
-	RBTreeNode(const pair<K, V>& kv)
-		:_kv(kv)
+	RBTreeNode(const T& data)
+		:_data(data)
 		, _left(nullptr)
 		, _right(nullptr)
 		, _parent(nullptr)
@@ -27,30 +28,112 @@ struct RBTreeNode
 	{}
 };
 
+template <class T>
+struct __TreeIterator {
+	typedef RBTreeNode<T> Node;
+	typedef __TreeIterator<T> Self;
+	__TreeIterator(Node* node)
+		:_node(node)
+	{}
 
-template<class K, class V>
+	Node* _node;
+
+	T& operator*() {
+		return _node->_data;
+	}
+
+	T* operator->() {
+		return &_node->_data;
+	}
+
+	bool operator!=(const Self& s) {
+		return s._node != _node;
+	}
+
+	Self& operator++() {
+		Node* cur = _node;
+		if (cur->_right)
+		{
+			cur = cur->_right;
+			//找右子树中的最左节点
+			while (cur && cur->_left)
+			{
+				cur = cur->_left;
+			}
+			_node = cur;
+		}
+		else {
+			// 找parent，直到cur节点为parent的左节点
+			Node* parent = cur->_parent;
+			while (parent && cur == parent->_right)
+			{
+				cur = parent;
+				parent = cur->_parent;
+			}
+			_node = parent;
+		}
+		return *this;
+	}
+};
+
+template<class K, class T, class KeyOfT>
 class RBTree
 {
-	typedef RBTreeNode<K, V> Node;
-
+	typedef RBTreeNode<T> Node;
 public:
-	bool Insert(const pair<K, V>& kv) {
+
+	typedef __TreeIterator<T> iterator;
+
+	iterator begin() {
+		//找最左节点
+		Node* cur = _root;
+		while (cur && cur->_left)
+		{
+			cur = cur->_left;
+		}
+		return __TreeIterator<T>(cur);
+	}
+
+	iterator end() {
+		return __TreeIterator<T>(nullptr);
+	}
+
+	Node* Find(const K& key) {
+		KeyOfT kot;
+		Node* cur = _root;
+		while (cur)
+		{
+			if (kot(cur->_data) > key) {
+				cur = cur->_left;
+			}
+			else if (kot(cur->_data) < key) {
+				cur = cur->_right;
+			}
+			else {
+				return cur;
+			}
+		}
+		return nullptr;
+	}
+
+	bool Insert(const T& data) {
+		KeyOfT kot;
 		Node* cur = _root;
 		Node* parent = nullptr;
 		if (cur == nullptr)
 		{
-			_root = new Node(kv);
+			_root = new Node(data);
 			_root->_col = BLACK;
 			return true;
 		}
 
 		while (cur)
 		{
-			if (kv.first > cur->_kv.first) {
+			if (kot(data) > kot(cur->_data)) {
 				parent = cur;
 				cur = cur->_right;
 			}
-			else if (kv.first < cur->_kv.first) {
+			else if (kot(data) < kot(cur->_data)) {
 				parent = cur;
 				cur = cur->_left;
 			}
@@ -59,9 +142,9 @@ public:
 			}
 		}
 
-		cur = new Node(kv);
+		cur = new Node(data);
 		cur->_col = RED;
-		if (cur->_kv.first > parent->_kv.first)
+		if (kot(cur->_data) > kot(parent->_data))
 		{
 			parent->_right = cur;
 		}
@@ -266,6 +349,7 @@ public:
 
 private:
 	Node* _root = nullptr;
+
 public:
 	int rotateCount = 0;
 };
