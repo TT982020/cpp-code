@@ -11,15 +11,25 @@ namespace name_set {
 		};
 
 	public:
-		typedef typename RBTree<K, K, setKeyOfT>::iterator iterator;
-		iterator begin() {
+		//set不能修改key的值
+		typedef typename RBTree<K, K, setKeyOfT>::const_iterator iterator;
+		typedef typename RBTree<K, K, setKeyOfT>::const_iterator const_iterator;
+		/*iterator begin() const {
 			return _t.begin();
 		}
-		iterator end() {
+		iterator end() const {
+			return _t.end();
+		}*/
+		const_iterator begin() const {
+			return _t.begin();
+		}
+		const_iterator end() const {
 			return _t.end();
 		}
-		bool insert(const K& key) {
-			return _t.Insert(key);
+		pair<iterator, bool> insert(const K& key) {
+			pair<typename RBTree<K, K, setKeyOfT>::iterator, bool> p = _t.Insert(key);
+
+			return pair<iterator, bool>(p.first, p.second);
 		}
 
 	private:

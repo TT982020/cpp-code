@@ -19,6 +19,8 @@ int main() {
 	name_map::map<int, int>::iterator it = m.begin();
 	while (it != m.end())
 	{
+		//it->first = 1;
+		it->second = 2;
 		cout << it->first << ":" << it->second << endl;
 		++it;
 	}
@@ -28,14 +30,26 @@ int main() {
 	for (const auto& e : m) {
 		cout << e.first << ":" << e.second << endl;
 	}
-
 	cout << endl;
 
 	name_set::set<int>::iterator iter = s.begin();
 	while (iter != s.end())
 	{
+		//(*iter)+=2;
 		cout << *iter << " ";
 		++iter;
+	}
+	cout << endl;
+
+	name_map::map<string, string> dict;
+	dict.insert(make_pair("sort", "xxx"));//插入
+	dict["left"];  // 插入
+	dict["left"] = "左边";  //修改
+	dict["sort"] = "排序";  //修改
+	dict["right"] = "右边"; //插入+修改
+
+	for (const auto& each : dict) {
+		cout << each.first << ":" << each.second << endl;
 	}
 
 	return 0;

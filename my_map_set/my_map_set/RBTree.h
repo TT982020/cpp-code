@@ -28,21 +28,26 @@ struct RBTreeNode
 	{}
 };
 
-template <class T>
+template <class T, class Ptr, class Ref>
 struct __TreeIterator {
 	typedef RBTreeNode<T> Node;
-	typedef __TreeIterator<T> Self;
+	typedef __TreeIterator<T, Ptr, Ref> Self;
+	typedef __TreeIterator<T, T*, T&> Iterator;
 	__TreeIterator(Node* node)
 		:_node(node)
 	{}
 
+	__TreeIterator(const Iterator& iter) 
+		:_node(iter._node)
+	{}
+
 	Node* _node;
 
-	T& operator*() {
+	Ref operator*() {
 		return _node->_data;
 	}
 
-	T* operator->() {
+	Ptr operator->() {
 		return &_node->_data;
 	}
 
@@ -74,6 +79,31 @@ struct __TreeIterator {
 		}
 		return *this;
 	}
+
+	Self& operator--() {
+		Self ret = *this;
+
+		if (_node->_left)
+		{
+			Node* cur = _node->_left;
+			while (cur && cur->_right)
+			{
+				cur = cur->_right;
+			}
+			_node = cur;
+		}
+		else {
+			Node* cur = _node;
+			Node* parent = cur->_parent;
+			while (parent && parent->_left == cur)
+			{
+				cur = parent;
+				parent = cur->_parent;
+			}
+			_node = parent;
+		}
+		return ret;
+	}
 };
 
 template<class K, class T, class KeyOfT>
@@ -82,7 +112,8 @@ class RBTree
 	typedef RBTreeNode<T> Node;
 public:
 
-	typedef __TreeIterator<T> iterator;
+	typedef __TreeIterator<T, T*, T&> iterator;
+	typedef __TreeIterator<T, const T*, const T&> const_iterator;
 
 	iterator begin() {
 		//找最左节点
@@ -91,11 +122,25 @@ public:
 		{
 			cur = cur->_left;
 		}
-		return __TreeIterator<T>(cur);
+		return iterator(cur);
 	}
 
 	iterator end() {
-		return __TreeIterator<T>(nullptr);
+		return iterator(nullptr);
+	}
+
+	const_iterator begin() const {
+		//找最左节点
+		Node* cur = _root;
+		while (cur && cur->_left)
+		{
+			cur = cur->_left;
+		}
+		return const_iterator(cur);
+	}
+
+	const_iterator end() const {
+		return const_iterator(nullptr);
 	}
 
 	Node* Find(const K& key) {
@@ -116,7 +161,7 @@ public:
 		return nullptr;
 	}
 
-	bool Insert(const T& data) {
+	pair<iterator, bool> Insert(const T& data) {
 		KeyOfT kot;
 		Node* cur = _root;
 		Node* parent = nullptr;
@@ -124,7 +169,7 @@ public:
 		{
 			_root = new Node(data);
 			_root->_col = BLACK;
-			return true;
+			return make_pair(iterator(_root), true);
 		}
 
 		while (cur)
@@ -138,11 +183,12 @@ public:
 				cur = cur->_left;
 			}
 			else {
-				return false;
+				return make_pair(iterator(cur), false);
 			}
 		}
 
 		cur = new Node(data);
+		Node* newnode = cur;
 		cur->_col = RED;
 		if (kot(cur->_data) > kot(parent->_data))
 		{
@@ -217,7 +263,7 @@ public:
 
 		_root->_col = BLACK;
 
-		return true;
+		return make_pair(iterator(newnode), true);
 	}
 
 	void RotateL(Node* parent) {
