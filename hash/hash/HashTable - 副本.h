@@ -116,20 +116,20 @@ namespace open_address {
 }
 
 namespace hash_bucket {
-	template<class T>
+	template<class K, class V>
 	struct HashNode
 	{
-		T _data;
-		HashNode<T>* _next;
-		HashNode(const T& data)
-			:_data(data)
+		pair<K, V> _kv;
+		HashNode<K, V>* _next;
+		HashNode(const pair<K,V>& kv)
+			:_kv(kv)
 			,_next(nullptr)
 		{}
 	};
 
-	template<class K, class T, class KeyOfT, class HashFunc = DefaultHashFunc<K>>
+	template<class K, class V, class HashFunc = DefaultHashFunc<K>>
 	class HashTable {
-		typedef HashNode<T> Node;
+		typedef HashNode<K, V> Node;
 	public:
 		HashTable() {
 			_table.resize(10, nullptr);
@@ -152,13 +152,12 @@ namespace hash_bucket {
 
 		Node* Find(const K& key) {
 			HashFunc hf;
-			KeyOfT kot;
 			size_t hashi = hf(key) % _table.size();
 
 			Node* cur = _table[hashi];
 			while (cur)
 			{
-				if (kot(cur->_data) == key) {
+				if (cur->_kv.first == key) {
 					return cur;
 				}
 				cur = cur->_next;
@@ -166,10 +165,9 @@ namespace hash_bucket {
 			return nullptr;
 		}
 
-		bool Insert(const T& data) {
+		bool Insert(const pair<K, V>& kv) {
 			HashFunc hf;
-			KeyOfT kot;
-			if (Find(kot(data)))
+			if (Find(kv.first))
 			{
 				return false;
 			}
@@ -184,7 +182,7 @@ namespace hash_bucket {
 					while (cur)
 					{
 						Node* next = cur->_next;
-						int hashi = hf(kot(cur->_data)) % newsize;
+						int hashi = hf(cur->_kv.first) % newsize;
 						cur->_next = newtable[hashi];
 						newtable[hashi] = cur;
 						cur = next;
@@ -195,8 +193,8 @@ namespace hash_bucket {
 				//旧表和新表进行交换
 				_table.swap(newtable);
 			}
-			int hashi = hf(kot(data)) % _table.size();
-			Node* newnode = new Node(data);
+			int hashi = hf(kv.first) % _table.size();
+			Node* newnode = new Node(kv);
 			newnode->_next = _table[hashi];
 			_table[hashi] = newnode;
 			++_n;
@@ -205,14 +203,13 @@ namespace hash_bucket {
 
 		bool Erase(const K& key) {
 			HashFunc hf;
-			KeyOfT kot;
 			size_t hashi = hf(key) % _table.size();
 			Node* cur = _table[hashi];
 			Node* prev = nullptr;
 
 			while (cur)
 			{
-				if (kot(cur->_data) == key) {
+				if (cur->_kv.first == key) {
 					if (prev == nullptr)
 					{
 						_table[hashi] = cur->_next;
@@ -221,7 +218,6 @@ namespace hash_bucket {
 						prev->_next = cur->_next;
 					}
 					delete cur;
-					--_n;
 					return true;
 				}
 				prev = cur;
@@ -237,7 +233,7 @@ namespace hash_bucket {
 				printf("[%d]->", i);
 				while (cur)
 				{
-					cout << cur->_data.first << ":" << cur->_data.second << "->";
+					cout << cur->_kv.first << ":" << cur->_kv.second << "->";
 					cur = cur->_next;
 				}
 				cout << "NULL" << endl;

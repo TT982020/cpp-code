@@ -1,9 +1,9 @@
 #include<iostream>
-#include<unordered_set>
-#include<unordered_map>
 
 using namespace std;
 #include"HashTable.h"
+#include "UnorderedMap.h"
+#include "UnorderedSet.h"
 
 //int main() {
 //	unordered_set<int> us;
@@ -52,31 +52,42 @@ using namespace std;
 //	return 0;
 //}
 
+//int main() {
+//	hash_bucket::HashTable<int, int> ht;
+//	int a[] = { 1,111,4,7,15,25,44,9 };
+//	for (auto e : a) {
+//		ht.Insert(make_pair(e, e));
+//	}
+//	ht.Print();
+//	ht.Insert(make_pair(14, 14));
+//	ht.Print();
+//	ht.Insert(make_pair(24, 24));
+//	ht.Print();
+//
+//	ht.Insert(make_pair(34, 34));
+//	ht.Print();
+//
+//	ht.Erase(34);
+//	ht.Print();
+//
+//	hash_bucket::HashTable<string, string> ht1;
+//	ht1.Insert(make_pair("sort", "ÅÅĞò"));
+//	ht1.Insert(make_pair("left", "×ó±ß"));
+//	ht1.Insert(make_pair("right", "ÓÒ±ß"));
+//	ht1.Insert(make_pair("insert", "²åÈë"));
+//	ht1.Insert(make_pair("string", "×Ö·û´®"));
+//	ht1.Insert(make_pair("haha", "¹ş¹ş"));
+//
+//	ht1.Print();
+//}
+
 int main() {
-	hash_bucket::HashTable<int, int> ht;
-	int a[] = { 1,111,4,7,15,25,44,9 };
-	for (auto e : a) {
-		ht.Insert(make_pair(e, e));
-	}
-	ht.Print();
-	ht.Insert(make_pair(14, 14));
-	ht.Print();
-	ht.Insert(make_pair(24, 24));
-	ht.Print();
-
-	ht.Insert(make_pair(34, 34));
-	ht.Print();
-
-	ht.Erase(34);
-	ht.Print();
-
-	hash_bucket::HashTable<string, string> ht1;
-	ht1.Insert(make_pair("sort", "ÅÅĞò"));
-	ht1.Insert(make_pair("left", "×ó±ß"));
-	ht1.Insert(make_pair("right", "ÓÒ±ß"));
-	ht1.Insert(make_pair("insert", "²åÈë"));
-	ht1.Insert(make_pair("string", "×Ö·û´®"));
-	ht1.Insert(make_pair("haha", "¹ş¹ş"));
-
-	ht1.Print();
+	my_map::unordered_map<string, string> dict;
+	dict.insert(make_pair("sort", "ÅÅĞò"));
+	dict.insert(make_pair("left", "×ó±ß"));
+	dict.insert(make_pair("right", "ÓÒ±ß"));
+	dict.insert(make_pair("insert", "²åÈë"));
+	dict.insert(make_pair("string", "×Ö·û´®"));
+	dict.insert(make_pair("haha", "¹ş¹ş"));
+	dict.print();
 }
