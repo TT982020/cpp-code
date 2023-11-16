@@ -116,6 +116,8 @@ namespace open_address {
 }
 
 namespace hash_bucket {
+	
+
 	template<class T>
 	struct HashNode
 	{
@@ -127,10 +129,72 @@ namespace hash_bucket {
 		{}
 	};
 
+	// Ç°ÖÃÉùÃ÷
 	template<class K, class T, class KeyOfT, class HashFunc = DefaultHashFunc<K>>
-	class HashTable {
+	class HashTable;
+
+	template<class K, class T, class KeyOfT, class HashFunc>
+	struct HTIterator
+	{
 		typedef HashNode<T> Node;
+		typedef HTIterator<K, T, KeyOfT, HashFunc> Self;
+
+		Node* _node;
+		HashTable<K, T, KeyOfT, HashFunc>* _pht;
+
+		HTIterator(Node* node, HashTable<K, T, KeyOfT, HashFunc>* pht)
+			:_node(node)
+			, _pht(pht)
+		{}
+
+		Self operator++() {
+			KeyOfT kot;
+			HashFunc hf;
+			if (_node->_next)
+			{
+				_node = _node->_next;
+				return *this;
+			}
+			else {
+				size_t hashi = hf(kot(_node->_data)) % _pht->_table.size();
+				++hashi;
+				while (hashi < _pht->_table.size())
+				{
+					if (_pht->_table[hashi])
+					{
+						_node = _pht->_table[hashi];
+						return *this;
+					}
+					else {
+						++hashi;
+					}
+				}
+				_node = nullptr;
+				return *this;
+			}
+		}
+
+		T& operator*() {
+			return _node->_data;
+		}
+
+		T* operator->() {
+			return &_node->_data;
+		}
+
+		bool operator!=(const Self& s) {
+			return _node != s._node;
+		}
+
+	};
+
+	template<class K, class T, class KeyOfT, class HashFunc>
+	class HashTable {
+		template<class K, class T, class KeyOfT, class HashFunc>
+		friend struct HTIterator;
 	public:
+		typedef HashNode<T> Node;
+		typedef HTIterator<K, T, KeyOfT, HashFunc> iterator;
 		HashTable() {
 			_table.resize(10, nullptr);
 			_n = 0;
@@ -148,6 +212,21 @@ namespace hash_bucket {
 				}
 				_table[i] = nullptr;
 			}
+		}
+		iterator begin() {
+			for (size_t i = 0; i < _table.size(); i++)
+			{
+				Node* cur = _table[i];
+				if (cur)
+				{
+					return iterator(cur, this);
+				}
+			}
+			return iterator(nullptr, this);
+		}
+
+		iterator end() {
+			return iterator(nullptr, this);
 		}
 
 		Node* Find(const K& key) {

@@ -82,6 +82,22 @@ using namespace std;
 //}
 
 int main() {
+	my_set::unordered_set<int> s;
+	s.insert(3);
+	s.insert(12);
+	s.insert(11);
+	s.insert(9);
+	s.insert(53);
+	s.insert(5);
+	my_set::unordered_set<int>::iterator it = s.begin();
+	while (it != s.end())
+	{
+		cout << *it << endl;
+		++it;
+	}
+	cout << endl;
+
+
 	my_map::unordered_map<string, string> dict;
 	dict.insert(make_pair("sort", "ÅÅĞò"));
 	dict.insert(make_pair("left", "×ó±ß"));
@@ -90,4 +106,17 @@ int main() {
 	dict.insert(make_pair("string", "×Ö·û´®"));
 	dict.insert(make_pair("haha", "¹ş¹ş"));
 	dict.print();
+
+	my_map::unordered_map<string, string>::iterator iter = dict.begin();
+	while (iter != dict.end())
+	{
+		cout << iter->first << ":" << iter->second << endl;
+		++iter;
+	}
+	cout << endl;
+
+	for (const auto& e : dict) {
+		cout << e.first << ":" << e.second << endl;
+	}
+	cout << endl;
 }

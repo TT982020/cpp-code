@@ -11,13 +11,21 @@ namespace my_map {
 				return data.first;
 			}
 		};
+		typedef typename hash_bucket::HashTable<K, pair<K, V>, MapKeyOfT>::iterator iterator;
 		bool insert(const pair<K, V>& kv) {
-			return ht.Insert(kv);
+			return _ht.Insert(kv);
 		}
 		void print() {
-			ht.Print();
+			_ht.Print();
+		}
+		iterator begin() {
+			return _ht.begin();
+		}
+
+		iterator end() {
+			return _ht.end();
 		}
 	private:
-		hash_bucket::HashTable<K, pair<K, V>, MapKeyOfT> ht;
+		hash_bucket::HashTable<K, pair<K, V>, MapKeyOfT> _ht;
 	};
 }
