@@ -92,6 +92,7 @@ int main() {
 	my_set::unordered_set<int>::iterator it = s.begin();
 	while (it != s.end())
 	{
+		//(*it)++;
 		cout << *it << endl;
 		++it;
 	}
@@ -110,10 +111,18 @@ int main() {
 	my_map::unordered_map<string, string>::iterator iter = dict.begin();
 	while (iter != dict.end())
 	{
+		//不能修改key
+		//iter->first = 10;
+		//iter->second = 10;
 		cout << iter->first << ":" << iter->second << endl;
 		++iter;
 	}
 	cout << endl;
+
+	dict["sort"] = "xxx";
+	dict["happy"];
+	dict["halle"] = "你好";
+
 
 	for (const auto& e : dict) {
 		cout << e.first << ":" << e.second << endl;

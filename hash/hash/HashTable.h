@@ -133,18 +133,31 @@ namespace hash_bucket {
 	template<class K, class T, class KeyOfT, class HashFunc = DefaultHashFunc<K>>
 	class HashTable;
 
-	template<class K, class T, class KeyOfT, class HashFunc>
+	template<class K, class T, class Ptr, class Ref, class KeyOfT, class HashFunc>
 	struct HTIterator
 	{
 		typedef HashNode<T> Node;
-		typedef HTIterator<K, T, KeyOfT, HashFunc> Self;
+		typedef HTIterator<K, T, Ptr, Ref, KeyOfT, HashFunc> Self;
+		typedef HTIterator<K, T, T*, T&, KeyOfT, HashFunc> iterator;
 
 		Node* _node;
-		HashTable<K, T, KeyOfT, HashFunc>* _pht;
+		const HashTable<K, T, KeyOfT, HashFunc>* _pht;
 
-		HTIterator(Node* node, HashTable<K, T, KeyOfT, HashFunc>* pht)
+		/*HTIterator(Node* node, HashTable<K, T, KeyOfT, HashFunc>* pht)
 			:_node(node)
 			, _pht(pht)
+		{}*/
+
+		//普通迭代器，它是拷贝构造
+		//const迭代器，它是构造
+		HTIterator(Node* node, const HashTable<K, T, KeyOfT, HashFunc>* pht)
+			:_node(node)
+			, _pht(pht)
+		{}
+
+		HTIterator(const iterator& iter)
+			:_node(iter._node)
+			,_pht(iter._pht)
 		{}
 
 		Self operator++() {
@@ -174,11 +187,11 @@ namespace hash_bucket {
 			}
 		}
 
-		T& operator*() {
+		Ref operator*() {
 			return _node->_data;
 		}
 
-		T* operator->() {
+		Ptr operator->() {
 			return &_node->_data;
 		}
 
@@ -190,15 +203,17 @@ namespace hash_bucket {
 
 	template<class K, class T, class KeyOfT, class HashFunc>
 	class HashTable {
-		template<class K, class T, class KeyOfT, class HashFunc>
+		template<class K, class T, class Ptr, class Ref, class KeyOfT, class HashFunc>
 		friend struct HTIterator;
 	public:
 		typedef HashNode<T> Node;
-		typedef HTIterator<K, T, KeyOfT, HashFunc> iterator;
+		typedef HTIterator<K, T, T*, T&, KeyOfT, HashFunc> iterator;
+		typedef HTIterator<K, T, const T*, const T&, KeyOfT, HashFunc> const_iterator;
 		HashTable() {
 			_table.resize(10, nullptr);
 			_n = 0;
 		}
+
 		~HashTable()
 		{
 			for (size_t i = 0; i < _table.size(); i++)
@@ -213,6 +228,7 @@ namespace hash_bucket {
 				_table[i] = nullptr;
 			}
 		}
+
 		iterator begin() {
 			for (size_t i = 0; i < _table.size(); i++)
 			{
@@ -229,7 +245,23 @@ namespace hash_bucket {
 			return iterator(nullptr, this);
 		}
 
-		Node* Find(const K& key) {
+		const_iterator begin() const {
+			for (size_t i = 0; i < _table.size(); i++)
+			{
+				Node* cur = _table[i];
+				if (cur)
+				{
+					return const_iterator(cur, this);
+				}
+			}
+			return const_iterator(nullptr, this);
+		}
+
+		const_iterator end() const {
+			return const_iterator(nullptr, this);
+		}
+
+		iterator Find(const K& key) {
 			HashFunc hf;
 			KeyOfT kot;
 			size_t hashi = hf(key) % _table.size();
@@ -238,19 +270,20 @@ namespace hash_bucket {
 			while (cur)
 			{
 				if (kot(cur->_data) == key) {
-					return cur;
+					return iterator(cur, this);
 				}
 				cur = cur->_next;
 			}
-			return nullptr;
+			return iterator(nullptr, this);
 		}
 
-		bool Insert(const T& data) {
+		pair<iterator, bool> Insert(const T& data) {
 			HashFunc hf;
 			KeyOfT kot;
-			if (Find(kot(data)))
+			iterator it = Find(kot(data));
+			if (it != end())
 			{
-				return false;
+				return make_pair(it, false);
 			}
 			if (_n == _table.size())
 			{
@@ -278,8 +311,10 @@ namespace hash_bucket {
 			Node* newnode = new Node(data);
 			newnode->_next = _table[hashi];
 			_table[hashi] = newnode;
+			it._node = newnode;
+			it._pht = this;
 			++_n;
-			return true;
+			return make_pair(it, true);
 		}
 
 		bool Erase(const K& key) {
