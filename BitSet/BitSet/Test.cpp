@@ -1,4 +1,5 @@
 #include "bitset.h"
+#include "BloomFilter.h"
 using namespace std;
 //int main() {
 //	bit_set::bitset<1000> bs;
@@ -30,7 +31,7 @@ using namespace std;
 //	return 0;
 //}
 
-//找到出现1次的数字
+////找到出现1次的数字
 //int main() {
 //	int a[] = { 1,2,3,3,4,4,4,4,4,2,3,6,3,1,5,5,8,9 };
 //	bit_set::twobitset<10> bs;
@@ -47,22 +48,38 @@ using namespace std;
 //}
 
 //找两个文件中数的交集
+//int main() {
+//	int a1[] = { 1,1,2,2,2,3,4,6,7,8,6,6,9,0 };
+//	int a2[] = { 9,7,5,6,0 };
+//	bit_set::bitset<10> bs1;
+//	bit_set::bitset<10> bs2;
+//	for (auto e : a1) {
+//		bs1.set(e);
+//	}
+//	for (auto e : a2) {
+//		bs2.set(e);
+//	}
+//	for (size_t i = 0; i < 10; i++)
+//	{
+//		if (bs1.test(i) && bs2.test(i)) {
+//			cout << i << " ";
+//		}
+//	}
+//	cout << endl;
+//
+//}
+
+void BloomFilter() {
+	bloomfilter<10> bf;
+	bf.set("孙悟空");
+	bf.set("猪八戒");
+	bf.set("牛魔王");
+	bf.set("二郎神");
+
+	cout << bf.test("孙悟空") << endl;
+	cout << bf.test("猪八戒") << endl;
+	cout << bf.test("沙悟净") << endl;
+}
 int main() {
-	int a1[] = { 1,1,2,2,2,3,4,6,7,8,6,6,9,0 };
-	int a2[] = { 9,7,5,6,0 };
-	bit_set::bitset<10> bs1;
-	bit_set::bitset<10> bs2;
-	for (auto e : a1) {
-		bs1.set(e);
-	}
-	for (auto e : a2) {
-		bs2.set(e);
-	}
-	for (size_t i = 0; i < 10; i++)
-	{
-		if (bs1.test(i) && bs2.test(i)) {
-			cout << i << " ";
-		}
-	}
-	cout << endl;
+	BloomFilter();
 }
